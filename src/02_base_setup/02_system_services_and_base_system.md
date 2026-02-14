@@ -208,3 +208,21 @@ Finally, apply:
 ```
 systemctl restart NetworkManager
 ```
+
+## Tinc VPN
+Install `tinc-pre` (from AUR).
+Execute:
+```
+tinc -n homeroute init myhostname
+```
+Note that this does 2048 RSA, we want 4096, so:
+```
+tinc -n homeroute generate-keys 4096
+```
+Now, clean out the old keys, i.e. the commented parts of:
+- `/etc/tinc/homeroute/{ed25519_key,rsa_key}.priv`
+- `/etc/tinc/homeroute/hosts/myhostname`
+
+Copy over config parts from existing tinc cluster, i.e. up/down scripts, other hosts, `tinc.conf` parts.
+If you use static addressing, do not forget to adapt IPs in up/down scripts and add a static `Address` to this host's config!
+Finally, copy over the host config file to all other nodes.
