@@ -1,0 +1,50 @@
+# Set up user environment
+
+## Set up shell
+```
+yay zsh
+chsh
+```
+Choose `/usr/bin/zsh`.
+
+Then, install `oh-my-zsh` (see (upstream docs)[https://ohmyz.sh/#install]).
+
+FIXME: May want to adjust theme and plugins and such!
+
+## Keep extended ZSH history
+Create `~/.oh-my-zsh/custom/history.zsh` with content:
+```
+HISTFILE=~/.histfile
+HISTSIZE=2000000
+SAVEHIST=2000000
+
+## Extended history.
+## Instead of just a list of commands, append it with this:
+## `:&lt;beginning time since epoch&gt;:&lt;elapsed seconds&gt;:&lt;command&gt;'.
+setopt extended_history
+```
+You may want to save ZSH history periodically, e.g. via Syncthing, useful for easier recovery or to search through history from other machines you use.
+
+Run `crontab -e` as user, and add a line like:
+```
+*/30   *  * * * cp -a /home/olifre/.histfile /home/olifre/Sync/Sync/ZSH-History/histfile-myhostname
+```
+
+## Set up `ssh-agent`
+```
+systemctl enable --user ssh-agent
+```
+Edit `~/.zshrc`, set:
+```
+export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+```
+Also, edit `~/.config/plasma-workspace/env/ssh-agent.sh` (may need to create directory) and add the same line.
+
+Re-login after this.
+
+## WireGuard VPN
+```
+yay wireguard-tools
+nmcli conn import type wireguard file somefilewithoutspaces.conf
+```
+Note that you may want to adapt the config in NetworkManager graphically afterwards, as VPNs imported this way are autoconnect / always-on by default.
