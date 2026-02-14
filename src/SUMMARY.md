@@ -1,0 +1,8 @@
+# Summary
+
+[Introduction](./intro.md)
+
+# Part 1: Before the first boot
+
+- [Installation system, partitioning and formatting](./01_pre_boot/01_installation_system_partitioning_formatting.md)
+- [Bootstrapping Arch and initial config](./01_pre_boot/02_bootstrapping_arch_initial_config.md))
