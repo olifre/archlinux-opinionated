@@ -95,10 +95,12 @@ passwd
 Create the file `/boot/refind_linux.conf` with content:
 ```
 "Boot with standard options no EHT"     "zswap.enabled=0 splash rw iwlwifi.disable_11be=1"
-"Boot with standard options"    "zswap.enabled=0 splash rw"
-"Boot without plymouth" "zswap.enabled=0 plymouth.enable=0 disablehooks=plymouth rw"
-"Boot with full UUIDs"  "rd.luks.name=9f26906e-7603-4735-91e4-81f412f089cc=ArchLinux root=/dev/mapper/ArchLinux zswap.enabled=0 rw"
-"Boot to single user mode" "zswap.enabled=0 splash ro single"
+"Boot with standard options"            "zswap.enabled=0 splash rw"
+"Boot without plymouth"                 "zswap.enabled=0 plymouth.enable=0 disablehooks=plymouth rw"
+"Boot to terminal"                      "zswap.enabled=0 rw systemd.unit=multi-user.target"
+"Boot with full UUIDs"                  "rd.luks.name=9f26906e-7603-4735-91e4-81f412f089cc=ArchLinux root=/dev/mapper/ArchLinux zswap.enabled=0 rw"
+"Boot to single user mode"              "zswap.enabled=0 splash ro single"
+"Boot with minimal options"             "ro"
 ```
 Note the special `iwlwifi` setting is due to problems with EHT/MLO support in case of my hardware, the UUID of course needs to be adapted, and `zswap` is turned off since we are using `zram` which will be set up later.
 

@@ -122,6 +122,12 @@ EXCLUDE_PATTERNS="'/home' '/var/cache/pacman' '/root/.cache' '/mnt/btrfs_pool'"
 ```
 Make sure the repository names contain different bucket names, e.g. `myhostname-home` and `myhostname-root`!
 
+Finally, make sure the files have permissions `0640` for security, and also protect the directory:
+```
+chmod 0750 /etc/restic
+chmod 0640 /etc/restic/*
+```
+
 Then, create the log directory:
 ```
 mkdir -p /var/log/restic/
