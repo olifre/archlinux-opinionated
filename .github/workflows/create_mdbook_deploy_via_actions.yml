@@ -56,16 +56,16 @@ jobs:
           else
             cargo install --version ${MDBOOK_VERSION} mdbook
           fi
-      - name: Install mdBook sitemap generator
+      - name: Install mdBook utils for sitemap generation
         run: |
-          cargo install mdbook-sitemap-generator
+          cargo install mdbook-utils
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
       - name: Build with mdBook
         run: mdbook build
-      - name: Build sitemap with mdBook sitemap generator
-        run: mdbook-sitemap-generator -d https://olifre.github.io/
+      - name: Build sitemap with mdBook utils
+        run: mdbook-utils sitemap -m src -b https://olifre.github.io/ -y
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
