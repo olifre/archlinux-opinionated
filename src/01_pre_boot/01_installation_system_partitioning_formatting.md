@@ -6,6 +6,7 @@ Boot from installation iso, set up keymap and font for installation environment:
 loadkeys de-latin1
 setfont ter-132b
 ```
+It's recommended to use a [Ventoy](https://www.ventoy.net/) boot stick, as we'll also rely on using a [rEFInd](https://www.rodsbooks.com/refind/) boot loader later on. For that, you can just put the official refind boot img on the Ventoy stick you have.
 
 ## Partitioning
 For partition#ing, we use `gdisk`:
