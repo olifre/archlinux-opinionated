@@ -60,5 +60,151 @@ syncthingtray-qt6
 plasma-meta
 kde-applications-meta
 sddm
+```
+Then, execute:
+```
 systemctl enable --now sddm
+```
+
+## Configure SDDM
+Set it up to use `wayland` (rootless):
+```
+mkdir /etc/sddm.conf.d/
+cd /etc/sddm.conf.d/
+```
+Create `/etc/sddm.conf.d/05-base.conf` with content:
+```
+[Theme]
+# Current theme name
+Current=breeze
+
+# Cursor theme used in the greeter
+CursorTheme=breeze_cursors
+```
+Create `10-wayland.conf` with content:
+```
+[General]
+DisplayServer=wayland
+GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
+
+[Wayland]
+CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1
+```
+Finally, restart it:
+```
+systemctl restart sddm.service
+```
+
+## Set up Plymouth
+```
+yay plymouth
+yay plymouth-kcm
+```
+Then, in `/etc/mkinitcpio.conf`, add `plymouth` to `HOOKS` after `systemd`, but before `sd-encrypt`, then:
+```
+mkinitcpio -P
+```
+
+## Set up `firewalld`
+Install `firewalld`, `firewall-applet` and `firewall-config`. Note that the integration into `KDE` is not too helpful at this point, it does not support zones. 
+After installation, activate:
+```
+systemctl enable --now firewalld
+```
+For further configuration, you can start `firewall-config` (GUI) and allow `syncthing`, `kdeconnect`. Alternatively, you can run:
+```
+firewall-cmd --zone=public --add-service syncthing
+firewall-cmd --zone=public --add-service kdeconnect
+firewall-cmd --runtime-to-permanent
+```
+Note `ssh` and `dhcpv6-client` are already on by default, see:
+```
+firewall-cmd --info-zone=public
+```
+
+## Set up `zram`
+Install `zram-generator`, then edit `/etc/systemd/zram-generator.conf`, should contain (swap and personal scratch space):
+```
+[zram0]
+zram-size = min(ram / 2, 16384)
+compression-algorithm = zstd
+
+[zram1]
+zram-size = min(ram / 2, 16384)
+mount-point = /var/tmp/olifre
+options = X-mount.owner=1000,X-mount.group=1000
+```
+Create `/etc/sysctl.d/99-vm-zram-parameters.conf` with content:
+```
+vm.swappiness = 180
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+vm.page-cluster = 0
+```
+
+## Set up `locate`
+Install package `plocate`.
+Edit `/etc/updatedb.conf` and set (to include `btrfs` filesystems):
+```
+PRUNE_BIND_MOUNTS = "no"
+```
+You may want to enable the timer (but also happens on reboot) or trigger the service for an initial indexing:
+```
+systemctl start plocate-updatedb.timer
+systemctl start plocate-updatedb.service
+```
+
+## Set up `logrotate`
+Install package `logrotate`. Note we already set up things here for the backup we'll set up later.
+Create file `/etc/logrotate.d/restic` with content:
+```
+/var/log/restic/*.log {
+    weekly
+    missingok
+    rotate 100
+    copytruncate
+    minsize 1M
+    compress
+}
+```
+You'll also want to create this:
+```
+mkdir /var/log/restic
+```
+Create file `/etc/logrotate.d/btrbk` with content:
+```
+/var/log/btrbk.log {
+    weekly
+    missingok
+    rotate 100
+    copytruncate
+    minsize 1M
+    compress
+}
+```
+Enable timer and trigger once:
+```
+systemctl enable --now logrotate.timer
+systemctl start logrotate
+```
+
+## Set up `cronie`
+```
+systemctl enable --now cronie
+```
+
+## Set up `dnsmasq`
+Install package `dnsmasq`, then, edit `/etc/NetworkManager/NetworkManager.conf` and add:
+```
+[main]
+dns=dnsmasq
+```
+For more safe and easy usage of VPNs, you may want to create `/etc/NetworkManager/dnsmasq.d/fritzbox` with content:
+```
+server=/fritz.box/192.168.22.1
+```
+(assuming this is your home router hostname and IP).
+Finally, apply:
+```
+systemctl restart NetworkManager
 ```
