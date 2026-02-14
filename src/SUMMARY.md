@@ -10,3 +10,4 @@
 # Part 2: Basic configuration
 
 - [Creating a user and making system self-bootable](02_base_setup/01_user_and_system_bootable.md)
+- [System services and base system installation](02_base_setup/02_system_services_and_base_system.md)

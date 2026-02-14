@@ -54,6 +54,42 @@ NPROC=8
 MAKEFLAGS="-j8"
 ```
 
+## Adapt the `/etc/fstab`
+In preparation for `btrbk` and more, you should adapt the `/etc/fstab`. It should look like this:
+```
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/mapper/root
+UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /               btrfs           rw,noatime,compress-force=zstd:6,ssd,space_cache=v2,subvol=/rootfs      0 0
+
+# /dev/mapper/root
+UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /home           btrfs           rw,noatime,compress-force=zstd:6,ssd,space_cache=v2,subvol=/home        0 0
+
+# /dev/mapper/root pool directory
+UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /mnt/btrfs_pool btrfs           rw,noatime,compress-force=zstd:6,ssd,space_cache=v2,subvolid=5,noauto   0 0
+
+# /dev/nvme0n1p1
+UUID=1542-2E81          /efi            vfat            noauto,x-systemd.automount,x-systemd.idle-timeout=1min,rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro   0 2
+
+# /dev/nvme0n1p2
+UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /boot           ext4            noauto,x-systemd.automount,x-systemd.idle-timeout=1min,rw,relatime      0 2
+```
+The important things we added here are the `/mnt/btrfs_pool` mountpoint and the `automount` settings for `/efi` amnd `/boot` such that they should only be mounted when actually accessed. You may want to regenerate the `initrd` at this point:
+```
+mkinitcpio -P
+```
+and you should for sure generate the `/mnt/btrfs_pool` mountpoint:
+```
+mkdir /mnt/btrfs_pool
+```
+and of course make sure the UUIDs match your system (use `blkid` to check)!
+
+## Set up `discard` for crypto devices, and increase performance for SSDs
+Be sure you are aware of the security implications! We do this to increase the SSD lifetime.
+For the performance trick, see the [ArchWiki](https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance) for more details.
+```
+cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh root
+```
+
 ## Install the bootloader
 We can finally install the boot loader. We will be using Secure Boot, with MOK (Machine-Owner Keys), so do as user:
 ```
@@ -83,7 +119,7 @@ cp /sys/firmware/acpi/bgrt/image /efi/EFI/refind/dell_logo.bmp
 cp /efi/EFI/refind/icons/os_arch.png /boot/vmlinuz-linux.png
 cp /efi/EFI/refind/icons/os_arch.png /boot/vmlinuz-linux-lts.png
 ```
-Now, follow [the ArchWiki on how to set up kernel signing](https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Signing_the_kernel_with_a_mkinitcpio_post_hook), and put the following in the `hook` file:
+Now, follow the [ArchWiki on how to set up kernel signing](https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Signing_the_kernel_with_a_mkinitcpio_post_hook), and put the following in the `hook` file:
 ```
 keypairs=(/etc/refind.d/keys/refind_local.key /etc/refind.d/keys/refind_local.crt)
 ```

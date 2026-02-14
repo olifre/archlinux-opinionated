@@ -28,7 +28,7 @@ mount /dev/nvme0n1p2 /mnt/rootfs/boot
 arch-chroot /mnt/rootfs
 ```
 
-## Setup locales
+## Set up locales
 In `/etc/locale.gen`, uncomment
 ```
 en_US.UTF-8 UTF-8
@@ -79,7 +79,7 @@ and tell NetworkManager to use it instead of it's integrated implementation by a
 dhcp=dhcpcd
 ```
 
-## Setup `initrd`
+## Set up `initrd`
 Edit `/etc/mkinitcpio.conf`, ensure `sd-encrypt` is added:
 ```
 HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt filesystems fsck)
