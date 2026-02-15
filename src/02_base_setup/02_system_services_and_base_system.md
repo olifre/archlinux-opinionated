@@ -1,10 +1,15 @@
 # System services and base system installation
 
+## Set up NTP
+```
+systemctl enable --now systemd-timesyncd.service
+```
+
 ## Set up some base services
+These are ArchLinux-specific.
 ```
 pacman -S reflector
 pacman -S pacman-contrib
-systemctl enable --now systemd-timesyncd.service
 systemctl enable --now paccache.timer
 systemctl enable --now fstrim.timer
 systemctl enable --now reflector.timer
@@ -13,7 +18,7 @@ systemctl enable --now reflector.timer
 ## Install some basic tools
 Some tools from Arch repos:
 ```
-pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing
+pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb
 ```
 Then, the groups:
 ```
@@ -214,3 +219,8 @@ Now, clean out the old keys, i.e. the commented parts of:
 Copy over config parts from existing tinc cluster, i.e. up/down scripts, other hosts, `tinc.conf` parts.
 If you use static addressing, do not forget to adapt IPs in up/down scripts and add a static `Address` to this host's config!
 Finally, copy over the host config file to all other nodes.
+
+## Set up Bluetooth
+```
+systemctl enable --now bluetooth.service
+```

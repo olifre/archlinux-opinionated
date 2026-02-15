@@ -79,4 +79,7 @@ Note that you may want to adapt the config in NetworkManager graphically afterwa
   * [User-Agent Switcher](https://addons.mozilla.org/de/firefox/addon/user-agent-switcher-revived/)
   * [FoxReplace](https://addons.mozilla.org/de/firefox/addon/foxreplace/)
   * [DownThemAll!](https://addons.mozilla.org/de/firefox/addon/downthemall/)
-
+* Firefox configuration:
+  * [User Scripts](https://github.com/olifre/userscripts)
+  * [User Styles](https://github.com/olifre/userstyles)
+  * May want to set up opening of last opened tabs, disable search results before history results, set as default browser.
