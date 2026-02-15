@@ -93,8 +93,7 @@ cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue -
 ## Install the bootloader
 We can finally install the boot loader. We will be using Secure Boot, with MOK (Machine-Owner Keys), so do as user:
 ```
-yay refind sbsigntools
-yay shim-signed
+yay -S refind sbsigntools shim-signed
 ```
 Then, as `root`, run:
 ```
@@ -125,7 +124,7 @@ keypairs=(/etc/refind.d/keys/refind_local.key /etc/refind.d/keys/refind_local.cr
 ```
 Do not forget to make the hook executable! Then, as user:
 ```
-yay linux
+yay -S linux linux-lts
 ```
 This will reinstall the kernel and sign it. 
 

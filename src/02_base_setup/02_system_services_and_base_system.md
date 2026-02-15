@@ -13,53 +13,20 @@ systemctl enable --now reflector.timer
 ## Install some basic tools
 Some tools from Arch repos:
 ```
-powertop
-guvcview
-chromium
-firefox
-thunderbird
-nextcloud-client
-fwupd
-stress-ng
-mpv
-libreoffice-fresh
-power-profiles-daemon
-keepassxc
-wl-clipboard
-xclip
-waypipe
-rsync
-biber
-python-pygments
-xorg-xlsclients
-inkscape
-screen
-strace
-iftop
-iotop-c
-htop
-tcpdump
-compsize
-scrcpy
-emacs
-wireshark-qt
-tcpdump
-gimp
+pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs wireshark-qt tcpdump gimp
 ```
 Then, the groups:
 ```
-texlive
+pacman -S texlive
 ```
 and from AUR:
 ```
-syncthingtray-qt6
+yay -S syncthingtray-qt6
 ```
 
 ## Install the desktop environment with apps
 ```
-plasma-meta
-kde-applications-meta
-sddm
+yay -S plasma-meta kde-applications-meta sddm
 ```
 Then, execute:
 ```
@@ -97,8 +64,7 @@ systemctl restart sddm.service
 
 ## Set up Plymouth
 ```
-yay plymouth
-yay plymouth-kcm
+yay -S plymouth plymouth-kcm
 ```
 Then, in `/etc/mkinitcpio.conf`, add `plymouth` to `HOOKS` after `systemd`, but before `sd-encrypt`, then:
 ```
@@ -106,7 +72,11 @@ mkinitcpio -P
 ```
 
 ## Set up `firewalld`
-Install `firewalld`, `firewall-applet` and `firewall-config`. Note that the integration into `KDE` is not too helpful at this point, it does not support zones. 
+Install `firewalld`, `firewall-applet` and `firewall-config`:
+```
+yay -S firewalld firewall-applet firewall-config
+```
+Note that the integration into `KDE` is not too helpful at this point, it does not support zones. 
 After installation, activate:
 ```
 systemctl enable --now firewalld
@@ -123,7 +93,11 @@ firewall-cmd --info-zone=public
 ```
 
 ## Set up `zram`
-Install `zram-generator`, then edit `/etc/systemd/zram-generator.conf`, should contain (swap and personal scratch space):
+Install `zram-generator`:
+```
+yay -S zram-generator
+```
+then edit `/etc/systemd/zram-generator.conf`, should contain (swap and personal scratch space):
 ```
 [zram0]
 zram-size = min(ram / 2, 16384)
@@ -143,7 +117,10 @@ vm.page-cluster = 0
 ```
 
 ## Set up `locate`
-Install package `plocate`.
+Install package `plocate`:
+```
+yay -S plocate
+```
 Edit `/etc/updatedb.conf` and set (to include `btrfs` filesystems):
 ```
 PRUNE_BIND_MOUNTS = "no"
@@ -155,7 +132,11 @@ systemctl start plocate-updatedb.service
 ```
 
 ## Set up `logrotate`
-Install package `logrotate`. Note we already set up things here for the backup we'll set up later.
+Install package `logrotate`:
+```
+yay -S logrotate
+```
+Note we already set up things here for the backup we'll set up later.
 Create file `/etc/logrotate.d/restic` with content:
 ```
 /var/log/restic/*.log {
@@ -194,7 +175,11 @@ systemctl enable --now cronie
 ```
 
 ## Set up `dnsmasq`
-Install package `dnsmasq`, then, edit `/etc/NetworkManager/NetworkManager.conf` and add:
+Install package `dnsmasq`:
+```
+yay -S dnsmasq
+```
+then, edit `/etc/NetworkManager/NetworkManager.conf` and add:
 ```
 [main]
 dns=dnsmasq
@@ -210,7 +195,10 @@ systemctl restart NetworkManager
 ```
 
 ## Tinc VPN
-Install `tinc-pre` (from AUR).
+Install `tinc-pre` (from AUR):
+```
+yay -S tinc-pre
+```
 Execute:
 ```
 tinc -n homeroute init myhostname

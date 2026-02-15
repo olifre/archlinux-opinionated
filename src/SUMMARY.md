@@ -13,8 +13,9 @@
 - [System services and base system installation](02_base_setup/02_system_services_and_base_system.md)
 - [Set up Backup](02_base_setup/03_backup.md)
 
-# Part 3: User-level setup
+# Part 3: User-level setup and site specifics
 - [Set up user environment](03_user_environment/01_user_environment.md)
+- [Site-specific setups](03_user_environment/02_site_specific_setups.md))
 
 # Part 4: Tips and Tricks
 - [Regular system maintenance](04_tips_and_tricks/01_regular_system_maintenance.md)

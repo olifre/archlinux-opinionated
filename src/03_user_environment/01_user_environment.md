@@ -2,7 +2,7 @@
 
 ## Set up shell
 ```
-yay zsh
+yay -S zsh
 chsh
 ```
 Choose `/usr/bin/zsh`.
@@ -44,7 +44,7 @@ Re-login after this.
 
 ## WireGuard VPN
 ```
-yay wireguard-tools
+yay -S wireguard-tools
 nmcli conn import type wireguard file somefilewithoutspaces.conf
 ```
 Note that you may want to adapt the config in NetworkManager graphically afterwards, as VPNs imported this way are autoconnect / always-on by default.
