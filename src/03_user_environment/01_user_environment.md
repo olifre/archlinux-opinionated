@@ -40,6 +40,14 @@ Run `crontab -e` as user, and add a line like:
 */30   *  * * * cp -a /home/olifre/.histfile /home/olifre/Sync/Sync/ZSH-History/histfile-myhostname
 ```
 
+## Syncthing setup
+Enable the `syncthing-tray-qt6` widget by enabling the tray icon, which automatically causes it to autostart and also starts the setup wizard. 
+
+You might also want to do (should in principle be done by the tray widget):
+```
+systemctl --user --now enable syncthing
+```
+
 ## Set up `ssh-agent`
 ```
 systemctl enable --user ssh-agent
