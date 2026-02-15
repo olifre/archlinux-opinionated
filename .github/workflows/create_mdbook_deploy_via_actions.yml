@@ -59,6 +59,9 @@ jobs:
       - name: Install mdBook utils for sitemap generation
         run: |
           cargo install mdbook-utils
+      - name: Install mdBook linkcheck for link checking
+        run: |
+          cargo install mdbook-linkcheck
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
@@ -69,7 +72,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./book
+          path: ./book/html
       - name: Autoclean cargo cache
         run: |
           cargo install cargo-cache --no-default-features --features ci-autoclean cargo-cache
