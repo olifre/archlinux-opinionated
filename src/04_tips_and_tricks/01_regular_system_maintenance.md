@@ -1,5 +1,8 @@
 # Regular system maintenance
 
+## Staying informed
+You will want to subscribe to the very low traffic [Arch-announce mailing list](https://lists.archlinux.org/mailman3/lists/arch-announce.lists.archlinux.org/), which announces important packaging changes. 
+
 ## Installing updates and purging things
 ```
 yay

@@ -9,6 +9,16 @@ Choose `/usr/bin/zsh`.
 
 Then, install `oh-my-zsh` (see (upstream docs)[https://ohmyz.sh/#install]).
 
+Also, install from AUR:
+```
+yay -S autojump
+```
+
+In `.zshrc`, activate these plugins:
+```
+plugins=(git github git-extras gitignore svn lol catimg compleat wakeonlan battery autojump colorize web-search dirhistory screen rand-quote hitchhiker)
+```
+
 FIXME: May want to adjust theme and plugins and such!
 
 ## Keep extended ZSH history
@@ -48,3 +58,17 @@ yay -S wireguard-tools
 nmcli conn import type wireguard file somefilewithoutspaces.conf
 ```
 Note that you may want to adapt the config in NetworkManager graphically afterwards, as VPNs imported this way are autoconnect / always-on by default.
+
+## Other things you might want to do
+* Firefox plugins such as:
+  * [FoxyProxy](https://addons.mozilla.org/de/firefox/addon/foxyproxy-standard/)
+  * [Greasemonkey](https://addons.mozilla.org/de/firefox/addon/greasemonkey/)
+  * [Stylus](https://addons.mozilla.org/de/firefox/addon/styl-us/)
+  * [KeePassXC-Browser](https://addons.mozilla.org/de/firefox/addon/keepassxc-browser/)
+  * [Plasma Integration](https://addons.mozilla.org/de/firefox/addon/plasma-integration/)
+  * [Privacy Badger](https://addons.mozilla.org/de/firefox/addon/privacy-badger17/)
+  * [uBlock Origin](https://addons.mozilla.org/de/firefox/addon/ublock-origin/)
+  * [User-Agent Switcher](https://addons.mozilla.org/de/firefox/addon/user-agent-switcher-revived/)
+  * [FoxReplace](https://addons.mozilla.org/de/firefox/addon/foxreplace/)
+  * [DownThemAll!](https://addons.mozilla.org/de/firefox/addon/downthemall/)
+
