@@ -69,6 +69,10 @@ net.ipv6.conf.wlp0s20f3.use_tempaddr = 2
 net.ipv6.conf.all.use_tempaddr = 2
 net.ipv6.conf.default.use_tempaddr = 2
 ```
+
+> [!WARNING]
+> While `dhcpcd` is still a great tool, I do not use it with NetworkManager in this way anymore, i.e. I am using the internal DHCP client. Reasoning: It seems that NetworkManager uses randomized MACs for scanning even while connected, which seems to confuse `dhcpcd` as the MAC changes and it obediently drops the IP address lease due to this, which in turn breaks connectivity.
+
 You might also want to install `dhcpcd`:
 ```
 pacman -S dhcpcd
