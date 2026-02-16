@@ -95,3 +95,39 @@ Note that you may want to adapt the config in NetworkManager graphically afterwa
 * In KDE/Plasma, you may want to:
   * Create more virtual desktop, e.g. 4 in total. 
   * Edit window decoration => window title bar buttons, add "always on top" and "on all desktops".
+
+## Set up Git
+You will likely want to use a `~/.gitconfig` like this:
+```
+[user]
+        email = freyermuth@physik.uni-bonn.de
+        name = Oliver Freyermuth
+		signingkey = PUTYOURGPGKEYHERE
+[color]
+        ui = auto
+        diff = auto
+        branch = auto
+        interactive = auto
+        status = auto
+[credential]
+        helper = cache --timeout=3600
+[core]
+        compression = 9
+        bigfilethreshold = 180m
+        whitespace = blank-at-eof,blank-at-eol,cr-at-eol,indent-with-non-tab,space-before-tab
+[push]
+        default = simple
+        followTags = true
+[merge]
+[grep]
+        lineNumber = on
+[diff "bin"]
+        textconv = hexdump -v -C
+[format]
+        pretty = fuller
+[filter "lfs"]
+        required = true
+        clean = git-lfs clean -- %f
+        smudge = git-lfs smudge -- %f
+        process = git-lfs filter-process
+```
