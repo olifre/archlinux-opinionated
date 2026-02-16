@@ -19,3 +19,4 @@
 
 # Part 4: Tips and Tricks
 - [Regular system maintenance](04_tips_and_tricks/01_regular_system_maintenance.md)
+- [Power Saving](04_tips_and_tricks/02_power_saving.md)

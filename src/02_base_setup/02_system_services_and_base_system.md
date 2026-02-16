@@ -18,7 +18,7 @@ systemctl enable --now reflector.timer
 ## Install some basic tools
 Some tools from Arch repos:
 ```
-pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb
+pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb usbutils arandr jq yq
 ```
 Then, the groups:
 ```
@@ -26,7 +26,7 @@ pacman -S texlive
 ```
 and from AUR:
 ```
-yay -S syncthingtray-qt6
+yay -S syncthingtray-qt6 powerstat
 ```
 
 ## Install the desktop environment with apps

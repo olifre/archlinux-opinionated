@@ -56,3 +56,21 @@ kinit = {
 ```
 You can of course leave existing domain configuration in.
 
+Note that the `localhost` part here is for forwarding the KDC via `socat`. 
+
+## Firefox
+
+Set `network.negotiate-auth.trusted-uris` in `about:config` to:
+```
+https://zabbix.physik.uni-bonn.de,https://web.physik.uni-bonn.de,https://web-dev.physik.uni-bonn.de,https://login.cern.ch,https://auth.cern.ch
+```
+
+## OIDC Agent setup
+Install the package:
+```
+yay -S oidc-agent
+```
+then enable this in `~/.zshrc` by adding:
+```
+eval `oidc-agent-service use` > /dev/null
+```

@@ -59,19 +59,19 @@ In preparation for `btrbk` and more, you should adapt the `/etc/fstab`. It shoul
 ```
 # <file system> <dir> <type> <options> <dump> <pass>
 # /dev/mapper/root
-UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /               btrfs           rw,noatime,compress-force=zstd:6,ssd,space_cache=v2,subvol=/rootfs      0 0
+UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /               btrfs           rw,noatime,commit=60,compress-force=zstd:6,ssd,space_cache=v2,subvol=/rootfs      0 0
 
 # /dev/mapper/root
-UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /home           btrfs           rw,noatime,compress-force=zstd:6,ssd,space_cache=v2,subvol=/home        0 0
+UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /home           btrfs           rw,noatime,commit=60,compress-force=zstd:6,ssd,space_cache=v2,subvol=/home        0 0
 
 # /dev/mapper/root pool directory
-UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /mnt/btrfs_pool btrfs           rw,noatime,compress-force=zstd:6,ssd,space_cache=v2,subvolid=5,noauto   0 0
+UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /mnt/btrfs_pool btrfs           rw,noatime,commit=60,compress-force=zstd:6,ssd,space_cache=v2,subvolid=5,noauto   0 0
 
 # /dev/nvme0n1p1
 UUID=1542-2E81          /efi            vfat            noauto,x-systemd.automount,x-systemd.idle-timeout=1min,rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro   0 2
 
 # /dev/nvme0n1p2
-UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /boot           ext4            noauto,x-systemd.automount,x-systemd.idle-timeout=1min,rw,relatime      0 2
+UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /boot           ext4            noauto,commit=60,x-systemd.automount,x-systemd.idle-timeout=1min,rw,relatime      0 2
 ```
 The important things we added here are the `/mnt/btrfs_pool` mountpoint and the `automount` settings for `/efi` amnd `/boot` such that they should only be mounted when actually accessed. You may want to regenerate the `initrd` at this point:
 ```

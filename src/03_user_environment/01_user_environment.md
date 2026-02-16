@@ -14,10 +14,16 @@ Also, install from AUR:
 yay -S autojump
 ```
 
-In `.zshrc`, activate these plugins:
+In `~/.zshrc`, activate these plugins:
 ```
 plugins=(git github git-extras gitignore svn lol catimg compleat wakeonlan battery autojump colorize web-search dirhistory screen rand-quote hitchhiker)
 ```
+
+In case you are using `ssh-agent` via `systemd` for `KeepassXC` for example, add to `~/.zshrc`:
+```
+export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+```
+This should trigger the user unit via `ssh-agent.socket`. 
 
 FIXME: May want to adjust theme and plugins and such!
 
@@ -83,3 +89,9 @@ Note that you may want to adapt the config in NetworkManager graphically afterwa
   * [User Scripts](https://github.com/olifre/userscripts)
   * [User Styles](https://github.com/olifre/userstyles)
   * May want to set up opening of last opened tabs, disable search results before history results, set as default browser.
+  * May also want to activate Passkey support in the KeepassXC browser plugin.
+  * If you are working with the LHC computing grid, you may want to copy over `~/.globus` and add the certificate to Firefox, and enable a master password there. 
+  * You may want to disable password saving in Firefox (in case you use KeepassXC). 
+* In KDE/Plasma, you may want to:
+  * Create more virtual desktop, e.g. 4 in total. 
+  * Edit window decoration => window title bar buttons, add "always on top" and "on all desktops".
