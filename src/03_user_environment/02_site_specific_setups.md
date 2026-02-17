@@ -74,3 +74,9 @@ then enable this in `~/.zshrc` by adding:
 ```
 eval `oidc-agent-service use` > /dev/null
 ```
+
+## Java JRE
+May be required by some GUIs:
+```
+yay -S jre-openjdk
+```

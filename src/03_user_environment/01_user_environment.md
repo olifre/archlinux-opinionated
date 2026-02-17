@@ -25,7 +25,36 @@ export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
 ```
 This should trigger the user unit via `ssh-agent.socket`. 
 
-FIXME: May want to adjust theme and plugins and such!
+You may also want to copy over more things from `~/.oh-my-zsh/custom` of one of your existing machines, e.g. themes etc.
+
+You might also want to add to your `.zshrc`:
+```
+export SYNCTEX_EDITOR="emacsclient --no-wait +%{line} %{input}"
+
+export LESSCOLORIZER='pygmentize -O style=solarized-dark'
+```
+
+You might also want to install:
+```
+yay -S zsh-syntax-highlighting zsh-autosuggestions
+```
+and activate these with:
+```
+cd ~/.oh-my-zsh/custom
+ln -s /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh .
+ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh .
+```
+and configure by creating `~/.oh-my-zsh/custom/zsh-autosuggestions-config.zsh` with content:
+```
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60'
+#ZSH_AUTOSUGGEST_USE_ASYNC=true
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=40
+```
+
+You may also want to create `~/bin` and copy over files you already have there, and then add to `.zshrc`:
+```
+export PATH=$PATH:~/bin/
+```
 
 ## Keep extended ZSH history
 Create `~/.oh-my-zsh/custom/history.zsh` with content:
