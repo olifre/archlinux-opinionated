@@ -141,6 +141,22 @@ Install package `logrotate`:
 ```
 yay -S logrotate
 ```
+Edit `/etc/logrotate.conf` (uncomment / add as-needed):
+```
+# use date as a suffix of the rotated file.
+dateext
+
+# compress rotated log files.
+compress
+
+# better compression
+compresscmd /usr/bin/xz
+uncompresscmd /usr/bin/xz
+compressext .xz
+compressoptions "-9"
+
+notifempty
+```
 Note we already set up things here for the backup we'll set up later.
 Create file `/etc/logrotate.d/restic` with content:
 ```
