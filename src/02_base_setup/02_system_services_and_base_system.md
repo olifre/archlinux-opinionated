@@ -31,14 +31,17 @@ yay -S syncthingtray-qt6 powerstat
 
 ## Install the desktop environment with apps
 ```
-yay -S plasma-meta kde-applications-meta sddm
+yay -S plasma-meta kde-applications-meta
 ```
 Then, execute:
 ```
-systemctl enable --now sddm
+systemctl enable --now plasmalogin
 ```
 
-## Configure SDDM
+## Configure SDDM (not used anymore!)
+> [!WARNING]
+> I have since migrated to `plasma-login-manager`, activated above. So this is not needed anymore, It uses wayland and runs rootless out of the box.
+
 Set it up to use `wayland` (rootless):
 ```
 mkdir /etc/sddm.conf.d/
@@ -143,9 +146,6 @@ yay -S logrotate
 ```
 Edit `/etc/logrotate.conf` (uncomment / add as-needed):
 ```
-# use date as a suffix of the rotated file.
-dateext
-
 # compress rotated log files.
 compress
 
@@ -165,8 +165,9 @@ Create file `/etc/logrotate.d/restic` with content:
     missingok
     rotate 100
     copytruncate
-    minsize 1M
+    minsize 10M
     compress
+	dateext
 }
 ```
 You'll also want to create this:
@@ -180,8 +181,9 @@ Create file `/etc/logrotate.d/btrbk` with content:
     missingok
     rotate 100
     copytruncate
-    minsize 1M
+    minsize 10M
     compress
+	dateext
 }
 ```
 Enable timer and trigger once:
