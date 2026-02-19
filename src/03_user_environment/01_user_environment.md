@@ -124,8 +124,14 @@ Note that you may want to adapt the config in NetworkManager graphically afterwa
 * In KDE/Plasma, you may want to:
   * Create more virtual desktop, e.g. 4 in total. 
   * Edit window decoration => window title bar buttons, add "always on top" and "on all desktops".
+  * In keyboard setup, enable the compose key, e.g. re-use the "menu" key for that.
 
 ## Set up Git
+Install `git-lfs`:
+```
+yay -S git-lfs
+git lfs install
+```
 You will likely want to use a `~/.gitconfig` like this:
 ```
 [user]
