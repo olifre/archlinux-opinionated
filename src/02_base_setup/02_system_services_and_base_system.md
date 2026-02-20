@@ -18,7 +18,7 @@ systemctl enable --now reflector.timer
 ## Install some basic tools
 Some tools from Arch repos:
 ```
-pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs-wayland wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb usbutils arandr jq yq wev
+pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs-wayland wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb usbutils arandr jq yq wev yubikey-personalization-gui yubikey-manager
 ```
 Then, the groups:
 ```
@@ -146,10 +146,7 @@ yay -S logrotate
 ```
 Edit `/etc/logrotate.conf` (uncomment / add as-needed):
 ```
-# compress rotated log files.
-compress
-
-# better compression
+# better compression when activated for a logfile pattern
 compresscmd /usr/bin/xz
 uncompresscmd /usr/bin/xz
 compressext .xz
