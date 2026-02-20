@@ -166,3 +166,9 @@ You will likely want to use a `~/.gitconfig` like this:
         smudge = git-lfs smudge -- %f
         process = git-lfs filter-process
 ```
+
+## Set up fonts
+```
+yay -S adobe-source-code-pro-fonts
+```
+I use this for example in Emacs. 
