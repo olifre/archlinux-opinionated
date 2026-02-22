@@ -173,6 +173,31 @@ yay -S adobe-source-code-pro-fonts
 ```
 I use this for example in Emacs. 
 
+## Set up `zathura`
+Create `~/.config/zathura/zathurarc` with content:
+```
+#set recolor-keephue true
+set recolor-darkcolor "#93A1A1"
+set recolor-lightcolor "#002B36"
+#set recolor-reverse-video true
+#set recolor true
+#set render-loading false
+set render-loading true
+#set render-loading-bg #000000
+#set render-loading-fg #000000
+set page-cache-size 300
+set page-store-threshold 300
+#set smooth-scroll true
+set font "Source Code Pro normal 7"
+set first-page-column 1:2
+```
+
+## Configure `yt-dlp`
+Create `~/.config/yt-dlp/config` with content:
+```
+--mtime
+```
+
 ## Set up `conky`
 Install `conky`:
 ```
@@ -187,3 +212,4 @@ Exec=conky --daemonize --pause=5
 StartupNotify=false
 Terminal=false
 ```
+I am using [this theme repo](https://github.com/olifre/conky-themes). 
