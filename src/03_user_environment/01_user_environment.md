@@ -172,3 +172,18 @@ You will likely want to use a `~/.gitconfig` like this:
 yay -S adobe-source-code-pro-fonts
 ```
 I use this for example in Emacs. 
+
+## Set up `conky`
+Install `conky`:
+```
+yay -S conky
+```
+Restore your favourite configuration to `~/.config/conky`, then create `~/.config/autostart/conky.desktop` with content:
+```
+[Desktop Entry]
+Type=Application
+Name=conky
+Exec=conky --daemonize --pause=5
+StartupNotify=false
+Terminal=false
+```

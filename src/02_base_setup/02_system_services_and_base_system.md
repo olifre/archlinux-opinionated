@@ -14,11 +14,15 @@ systemctl enable --now paccache.timer
 systemctl enable --now fstrim.timer
 systemctl enable --now reflector.timer
 ```
+You may want to edit `/etc/xdg/reflector/reflector.conf` to contain your country, e.g.:
+```
+--country Germany
+```
 
 ## Install some basic tools
 Some tools from Arch repos:
 ```
-pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs-wayland wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb usbutils arandr jq yq wev yubikey-personalization-gui yubikey-manager
+pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs-wayland wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb usbutils arandr jq yq wev yubikey-personalization-gui yubikey-manager root jupyter-metakernel gnuplot python-matplotlib python-numpy python-pandas python-scipy pv python-pip
 ```
 Then, the groups:
 ```
@@ -27,6 +31,12 @@ pacman -S texlive
 and from AUR:
 ```
 yay -S syncthingtray-qt6 powerstat
+```
+
+## Configure `nano`
+Edit `/etc/nanorc`, set:
+```
+set cutfromcursor
 ```
 
 ## Install the desktop environment with apps
