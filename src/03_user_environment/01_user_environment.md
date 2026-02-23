@@ -213,3 +213,6 @@ StartupNotify=false
 Terminal=false
 ```
 I am using [this theme repo](https://github.com/olifre/conky-themes). 
+
+## Set up Konsole
+You may want to copy the built-in profile, then set up infinite history, and also set a transparency of 20 % for the terminal.

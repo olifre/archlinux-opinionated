@@ -22,7 +22,7 @@ You may want to edit `/etc/xdg/reflector/reflector.conf` to contain your country
 ## Install some basic tools
 Some tools from Arch repos:
 ```
-pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs-wayland wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb usbutils arandr jq yq wev yubikey-personalization-gui yubikey-manager root jupyter-metakernel gnuplot python-matplotlib python-numpy python-pandas python-scipy pv python-pip perf tigervnc networkmanager-openconnect
+pacman -S powertop guvcview chromium firefox thunderbird nextcloud-client fwupd stress-ng mpv libreoffice-fresh power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs-wayland wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb usbutils arandr jq yq wev yubikey-personalization-gui yubikey-manager root jupyter-metakernel gnuplot python-matplotlib python-numpy python-pandas python-scipy pv python-pip perf tigervnc networkmanager-openconnect bind hid-tools
 ```
 Then, the groups:
 ```
@@ -30,7 +30,7 @@ pacman -S texlive
 ```
 and from AUR:
 ```
-yay -S syncthingtray-qt6 powerstat
+yay -S syncthingtray-qt6 powerstat afc
 ```
 
 ## Configure `nano`
@@ -260,3 +260,14 @@ Check things work:
 vainfo
 vulkaninfo
 ```
+
+## Intel Low-Power-Mode Daemon
+Install service:
+```
+yay -S intel-lpmd
+```
+Enable it:
+```
+systemctl enable --now intel_lpmd
+```
+Still need to determine whether that helps (may need to set `intel_lpmd_control AUTO` or write an actual XML config).
