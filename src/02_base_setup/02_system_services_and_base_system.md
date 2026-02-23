@@ -271,3 +271,18 @@ Enable it:
 systemctl enable --now intel_lpmd
 ```
 Still need to determine whether that helps (may need to set `intel_lpmd_control AUTO` or write an actual XML config).
+
+Check in:
+```
+systemctl status intel-lpmd
+```
+then copy over config to more matching config, e.g.:
+```
+cp /etc/intel_lpmd/intel_lpmd_config_F6_M189.xml /etc/intel_lpmd/intel_lpmd_config_F6_M189_T17.xml
+```
+and edit to your liking, for example:
+```
+<PerformanceDef>0</PerformanceDef>
+<BalancedDef>0</BalancedDef>
+<PowersaverDef>1</PowersaverDef>
+```
