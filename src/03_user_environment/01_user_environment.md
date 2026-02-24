@@ -216,3 +216,18 @@ I am using [this theme repo](https://github.com/olifre/conky-themes).
 
 ## Set up Konsole
 You may want to copy the built-in profile, then set up infinite history, and also set a transparency of 20 % for the terminal.
+
+## Set up printing
+In case you use a central CUPS server, things are easy:
+```
+mkdir ~/.cups
+```
+then, create `~/.cups/client.conf` with content:
+```
+Encryption IfRequested
+ServerName cups.example.com
+```
+and `~/.cups/lpoptions` with content:
+```
+Default my-favourite-printer
+```
