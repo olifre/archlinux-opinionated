@@ -74,6 +74,23 @@ then enable this in `~/.zshrc` by adding:
 ```
 eval `oidc-agent-service use` > /dev/null
 ```
+You may also want to create the file `~/.config/oidc-agent/custom_parameters.config` with content:
+```
+[
+  {
+    "parameter": "claims_in_tokens",
+    "value": "id_token token",
+    "for_issuer": [
+      "https://login.helmholtz.de/oauth2",
+      "https://login-dev.helmholtz.de/oauth2"
+    ],
+    "request": [
+      "auth_url"
+    ]
+  }
+]
+```
+depending on your use case.
 
 ## Java JRE
 May be required by some GUIs:
