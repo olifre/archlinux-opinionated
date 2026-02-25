@@ -204,6 +204,13 @@ systemctl start logrotate
 systemctl enable --now cronie
 ```
 
+## Activate monthly BTRFS scrub
+Results of the scrubs can then be found in the system journal.
+```
+systemctl enable --now btrfs-scrub@-.timer
+```
+The `-` is the `systemd-escape` variant of the `/` filesystem.
+
 ## Set up `dnsmasq`
 Install package `dnsmasq`:
 ```
