@@ -98,15 +98,15 @@ passwd
 ## Add `refind_linux.conf` for boot configuration
 Create the file `/boot/refind_linux.conf` with content:
 ```
-"Boot with standard options no EHT"     "zswap.enabled=0 splash rw iwlwifi.disable_11be=1"
-"Boot with standard options"            "zswap.enabled=0 splash rw"
-"Boot without plymouth"                 "zswap.enabled=0 plymouth.enable=0 disablehooks=plymouth rw"
-"Boot to terminal"                      "zswap.enabled=0 rw systemd.unit=multi-user.target"
-"Boot with full UUIDs"                  "rd.luks.name=9f26906e-7603-4735-91e4-81f412f089cc=ArchLinux root=/dev/mapper/ArchLinux zswap.enabled=0 rw"
-"Boot to single user mode"              "zswap.enabled=0 splash ro single"
+"Boot with standard options"            "zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 quiet splash rw"
+"Boot with standard options no EHT"     "zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 quiet splash rw iwlwifi.disable_11be=1"
+"Boot without plymouth"                 "zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 plymouth.enable=0 disablehooks=plymouth rw"
+"Boot to terminal"                      "zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 rw systemd.unit=multi-user.target"
+"Boot with full UUIDs"                  "rd.luks.name=bdf5159d-ad5d-4d1d-bfac-ce833c92048d=ArchLinux root=/dev/mapper/ArchLinux zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 rw"
+"Boot to single user mode"              "zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 ro single"
 "Boot with minimal options"             "ro"
 ```
-Note the special `iwlwifi` setting is due to problems with EHT/MLO support in case of my hardware, the UUID of course needs to be adapted, and `zswap` is turned off since we are using `zram` which will be set up later.
+Note the special `iwlwifi` setting is due potential to problems with EHT/MLO support in case of my hardware, the UUID of course needs to be adapted, and `zswap` is turned off since we are using `zram` which will be set up later. The timeout settings for LUKS are important in case the password entry is delayed, as otherwise `systemd` would time out if the password is not entered within 90 seconds and you'd be left with an unbootable system which can only be turned off hard, see [this link to the ArchWiki](https://wiki.archlinux.org/title/Dm-crypt/System_configuration#Timeout). 
 
 ## Test booting
 At this point, `refind` is not installed yet. As outlined in [Booting from the Installation medium](01_installation_system_partitioning_formatting.md#instmedium), we'll now use a rEFInd boot loader from an external medium, e.g. a [Ventoy](https://www.ventoy.net/) boot stick. You should be able to boot with that by now. 
