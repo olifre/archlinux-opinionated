@@ -298,3 +298,29 @@ and edit to your liking, for example:
 <BalancedDef>0</BalancedDef>
 <PowersaverDef>1</PowersaverDef>
 ```
+
+## BEES (for btrfs deupe)
+Install with:
+```
+yay -S bees
+```
+Then copy over config:
+```
+cp /etc/bees/beesd.conf.sample /etc/bees/beesd_root.conf
+```
+and adapt it, set `UUID` to the `UUID` returned for `lsblk -f`. 
+You should also set:
+```
+OPTIONS="-v 6"
+```
+for reduced verbosity.
+
+If you already have many `btrbk` snapshots, you may want to reduce the number of snapshots first.
+
+Finally, start the service using the `UUID`, for example:
+```
+systemctl enable --now beesd@b8a34ebc-029a-4c77-ac2c-33290c18b461.service
+```
+Check the `journal` on progress, and also `/var/run/bees` contains status information. 
+
+Note that after the first completed `bees` run, you might want to make sure to remove old snapshots from pre-`bees` to ensure they do not remain with duplicated data.
