@@ -324,3 +324,5 @@ systemctl enable --now beesd@b8a34ebc-029a-4c77-ac2c-33290c18b461.service
 Check the `journal` on progress, and also `/var/run/bees` contains status information. 
 
 Note that after the first completed `bees` run, you might want to make sure to remove old snapshots from pre-`bees` to ensure they do not remain with duplicated data.
+
+You might also want to check out statistics in `/mnt/btrfs_pool/.beeshome` (note that `/mnt/btrfs_pool` is not mounted by default). 
