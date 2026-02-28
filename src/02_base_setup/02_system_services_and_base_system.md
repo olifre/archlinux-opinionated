@@ -88,6 +88,11 @@ Then, in `/etc/mkinitcpio.conf`, add `plymouth` to `HOOKS` after `systemd`, but 
 ```
 mkinitcpio -P
 ```
+You might want to set the theme `bgrt` which is the ArchLinux default in any case, as can be confirmed with:
+```
+plymouth-set-default-theme
+```
+On an older system on which BGRT does not receive an image from UEFI, another interesting theme could e.g. be the `breeze` theme provided by the `breeze-plymouth` package.
 
 ## Set up `firewalld`
 Install `firewalld`, `firewall-applet` and `firewall-config`:

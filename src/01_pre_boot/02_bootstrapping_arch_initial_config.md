@@ -103,7 +103,7 @@ Create the file `/boot/refind_linux.conf` with content:
 "Boot without plymouth"                 "zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 plymouth.enable=0 disablehooks=plymouth rw"
 "Boot to terminal"                      "zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 rw systemd.unit=multi-user.target"
 "Boot with full UUIDs"                  "rd.luks.name=bdf5159d-ad5d-4d1d-bfac-ce833c92048d=ArchLinux root=/dev/mapper/ArchLinux zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 rw"
-"Boot to single user mode"              "zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 ro single"
+"Boot to single user mode"              "zswap.enabled=0 rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0 rw single"
 "Boot with minimal options"             "ro"
 ```
 Note the special `iwlwifi` setting is due potential to problems with EHT/MLO support in case of my hardware, the UUID of course needs to be adapted, and `zswap` is turned off since we are using `zram` which will be set up later. The timeout settings for LUKS are important in case the password entry is delayed, as otherwise `systemd` would time out if the password is not entered within 90 seconds and you'd be left with an unbootable system which can only be turned off hard, see [this link to the ArchWiki](https://wiki.archlinux.org/title/Dm-crypt/System_configuration#Timeout). 
