@@ -123,6 +123,7 @@ Note that you may want to adapt the config in NetworkManager graphically afterwa
   * You may want to disable password saving in Firefox (in case you use KeepassXC). 
 * In KDE/Plasma, you may want to:
   * Create more virtual desktop, e.g. 6 in total, and set up navigation to rotate.
+  * You may want to configure the virtual desktop switcher to show icons for apps.
   * You may want to configure the application switcher with icons not to limit itself to applications from the current virtual desktop.
   * Edit window decoration => window title bar buttons, add "always on top" and "on all desktops".
   * In keyboard setup, enable the compose key, e.g. re-use the "menu" key for that.
