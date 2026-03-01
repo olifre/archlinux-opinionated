@@ -92,8 +92,12 @@ You may also want to create the file `~/.config/oidc-agent/custom_parameters.con
 ```
 depending on your use case.
 
-## Java JRE
-May be required by some GUIs:
+## Grid VOMS tools and Java JDK
+Java JRE may be required by some GUIs, and JDK to build some:
 ```
-yay -S jre-openjdk
+yay -S jdk-openjdk
+```
+Also install VOMS tools and grid certificate authorities:
+```
+yay -S voms-clients igtf-trust-anchors
 ```

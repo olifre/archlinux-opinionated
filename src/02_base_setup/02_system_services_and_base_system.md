@@ -313,7 +313,10 @@ You should also set:
 ```
 OPTIONS="-v 6"
 ```
-for reduced verbosity.
+for reduced verbosity, and you also might want to make the `DB_SIZE` default setting explicit:
+```
+DB_SIZE=$((1024*1024*1024)) # 1G in bytes
+```
 
 If you already have many `btrbk` snapshots, you may want to reduce the number of snapshots first.
 
