@@ -124,9 +124,11 @@ Note that you may want to adapt the config in NetworkManager graphically afterwa
 * In KDE/Plasma, you may want to:
   * Create more virtual desktop, e.g. 6 in total, and set up navigation to rotate.
   * You may want to configure the virtual desktop switcher to show icons for apps.
+  * You may also want to disable gliding of the background image in the glide effect in virtual desktop setup.
   * You may want to configure the application switcher with icons not to limit itself to applications from the current virtual desktop.
   * Edit window decoration => window title bar buttons, add "always on top" and "on all desktops".
   * In keyboard setup, enable the compose key, e.g. re-use the "menu" key for that.
+  * You might want to change "Desktop" settings and add mouse bindings: Vertical Scroll to switch the vertical desktop and middle click to switch windows.
 
 ## Set up Git
 Install `git-lfs`:
