@@ -62,7 +62,7 @@ Note that the `localhost` part here is for forwarding the KDC via `socat`.
 
 Set `network.negotiate-auth.trusted-uris` in `about:config` to:
 ```
-https://zabbix.physik.uni-bonn.de,https://web.physik.uni-bonn.de,https://web-dev.physik.uni-bonn.de,https://login.cern.ch,https://auth.cern.ch
+https://zabbix.physik.uni-bonn.de,https://zabbix-test.physik.uni-bonn.de,https://web.physik.uni-bonn.de,https://web-dev.physik.uni-bonn.de,https://login.cern.ch,https://auth.cern.ch
 ```
 
 ## OIDC Agent setup
