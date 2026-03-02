@@ -129,6 +129,7 @@ Note that you may want to adapt the config in NetworkManager graphically afterwa
   * Edit window decoration => window title bar buttons, add "always on top" and "on all desktops".
   * In keyboard setup, enable the compose key, e.g. re-use the "menu" key for that.
   * You might want to change "Desktop" settings and add mouse bindings: Vertical Scroll to switch the vertical desktop and middle click to switch windows.
+  * You might also wantr to reconfigure the calendar to show calendar week numbers and important dates, e.g. astronomical events, regional holidays etc.
 
 ## Set up Git
 Install `git-lfs`:
