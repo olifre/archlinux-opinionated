@@ -55,6 +55,10 @@ You may also want to create `~/bin` and copy over files you already have there, 
 ```
 export PATH=$PATH:~/bin/
 ```
+In case you are using Grid tools, you might also want to set:
+```
+export RUCIO_ACCOUNT=MYCERNACCOUNT
+```
 
 ## Keep extended ZSH history
 Create `~/.oh-my-zsh/custom/history.zsh` with content:

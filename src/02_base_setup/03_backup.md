@@ -118,7 +118,7 @@ EXCLUDE_PATTERNS="'/home/olifre/.cache' '/home/olifre/some_cloud_sync'"
 ```
 and for the `root` backup:
 ```
-EXCLUDE_PATTERNS="'/home' '/var/cache/pacman' '/root/.cache' '/mnt/btrfs_pool'"
+EXCLUDE_PATTERNS="'/home' '/var/cache/pacman' '/root/.cache' '/var/lib/cvmfs' '/mnt/btrfs_pool'"
 ```
 Make sure the repository names contain different bucket names, e.g. `myhostname-home` and `myhostname-root`!
 

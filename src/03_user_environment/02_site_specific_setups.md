@@ -101,3 +101,56 @@ Also install VOMS tools and grid certificate authorities:
 ```
 yay -S voms-clients igtf-trust-anchors
 ```
+## CVMFS
+Install package:
+```
+yay -S cvmfs
+```
+Edit `/etc/cvmfs/default.local` and add:
+```
+CVMFS_REPOSITORIES=cvmfs-config.cern.ch,atlas.cern.ch,atlas-nightlies.cern.ch,atlas-condb.cern.ch,belle.cern.ch,grid.cern.ch,sft.cern.ch,sft-nightlies.cern.ch,lhcb.cern.ch,lhcbdev.cern.ch,unpacked.cern.ch
+CVMFS_QUOTA_LIMIT='2048'
+CVMFS_HTTP_PROXY='http://somesquidproxy-i-can-se.example.com:3128;DIRECT'
+```
+Then, execute as `root` in a separate terminal:
+```
+. /etc/cvmfs/default.local
+for A in $(echo $CVMFS_REPOSITORIES | tr ',' ' '); do
+  echo $A;
+  echo "$A /cvmfs/$A cvmfs noauto,x-systemd.automount,x-systemd.requires=network-online.target,x-systemd.idle-timeout=5min,x-systemd.device-timeout=10,_netdev 0 0" >> /etc/fstab;
+  mkdir /cvmfs/$A;
+done
+systemctl daemon-reload
+for A in /cvmfs/*; do mount $A; done
+```
+You might want to organize `/etc/fstab` a bit after this, for example, add a headline `# CVMFS` and add some empty lines before and after the mounts.
+
+Finally, configure the user part. For this, create the file `~/.oh-my-zsh/custom/setupATLAS.zsh` with content:
+```
+setupATLAS() {
+	if ls /cvmfs/atlas.cern.ch > /dev/null 2>&1; then
+		echo "Setting up CVMFS environment..."
+		export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
+		# ArchLinux, force container usage.
+		export ALRB_containerSiteOnly=YES
+		source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh "$@"
+		return $?
+	else
+		echo " ERROR: CVMFS not available on this host"
+		return 1
+	fi
+}
+```
+and the file `~/.oh-my-zsh/custom/setupBelle.zsh` with content:
+```
+setupBelle() {
+	if ls /cvmfs/belle.cern.ch > /dev/null 2>&1; then
+		echo "Setting up CVMFS environment..."
+		source /cvmfs/belle.cern.ch/tools/b2setup
+		return $?
+	else
+		echo " ERROR: CVMFS not available on this host"
+		return 1
+	fi
+}
+```
