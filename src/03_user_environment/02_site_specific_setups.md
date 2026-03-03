@@ -117,13 +117,17 @@ Then, execute as `root` in a separate terminal:
 . /etc/cvmfs/default.local
 for A in $(echo $CVMFS_REPOSITORIES | tr ',' ' '); do
   echo $A;
-  echo "$A /cvmfs/$A cvmfs noauto,x-systemd.automount,x-systemd.requires=network-online.target,x-systemd.idle-timeout=5min,x-systemd.device-timeout=10,_netdev 0 0" >> /etc/fstab;
+  echo "$A /cvmfs/$A cvmfs noauto,x-systemd.automount,x-systemd.requires=network-online.target,x-systemd.idle-timeout=5min,x-systemd.device-timeout=10,x-systemd.requires-mounts-for=/cvmfs/cvmfs-config.cern.ch,_netdev 0 0" >> /etc/fstab;
   mkdir /cvmfs/$A;
 done
+```
+You might want to organize `/etc/fstab` a bit after this, for example, add a headline `# CVMFS` and add some empty lines before and after the mounts. You should also remove the `x-systemd.requires-mounts-for=/cvmfs/cvmfs-config.cern.ch` from the config repository itself!
+Afterwards, finalize and test things with:
+```
 systemctl daemon-reload
 for A in /cvmfs/*; do mount $A; done
 ```
-You might want to organize `/etc/fstab` a bit after this, for example, add a headline `# CVMFS` and add some empty lines before and after the mounts.
+You may also want to reboot to get actual automounting working (this will enable the `.automount` units).
 
 Finally, configure the user part. For this, create the file `~/.oh-my-zsh/custom/setupATLAS.zsh` with content:
 ```
