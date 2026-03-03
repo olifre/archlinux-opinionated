@@ -117,6 +117,7 @@ Note that you may want to adapt the config in NetworkManager graphically afterwa
   * [uBlock Origin](https://addons.mozilla.org/de/firefox/addon/ublock-origin/)
   * [User-Agent Switcher](https://addons.mozilla.org/de/firefox/addon/user-agent-switcher-revived/)
   * [FoxReplace](https://addons.mozilla.org/de/firefox/addon/foxreplace/)
+  * [Form History Control](https://addons.mozilla.org/de/firefox/addon/form-history-control/)
   * [DownThemAll!](https://addons.mozilla.org/de/firefox/addon/downthemall/)
 * Firefox configuration:
   * [User Scripts](https://github.com/olifre/userscripts)
