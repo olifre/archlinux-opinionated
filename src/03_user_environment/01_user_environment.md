@@ -106,6 +106,30 @@ nmcli conn import type wireguard file somefilewithoutspaces.conf
 ```
 Note that you may want to adapt the config in NetworkManager graphically afterwards, as VPNs imported this way are autoconnect / always-on by default.
 
+## WireProxy setup
+In addition to a WireGuard VPN e.g. used for work, you might also want to use an extra VPN e.g. to home exposing itself as a SOCKS5 proxy.
+This can be done by `wireproxy`. Install it via:
+```
+yay -S wireproxy
+```
+Then deploy the config for a user-level service:
+```
+mkdir -p ~/.config/wireproxy
+```
+Create the file `~/.config/wireproxy/home.conf` with a regular wireguard config, but add:
+```
+[Socks5]
+BindAddress = 127.0.0.1:8100
+```
+Then enable the service with:
+```
+systemctl enable --now --user wireproxy@home.service
+```
+and set up your Firefox via FoxyProxy to use this SOCKS5 proxy as appropriate. You can check the status via:
+```
+journalctl --user -u wireproxy@home -f
+```
+
 ## Other things you might want to do
 * Firefox plugins such as:
   * [FoxyProxy](https://addons.mozilla.org/de/firefox/addon/foxyproxy-standard/)
