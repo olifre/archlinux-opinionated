@@ -33,5 +33,19 @@ mkinitcpio -P
 and reboot. The commands from above should work now, you should see a camera picture with non-ideal quality.
 
 Now, install the tooling necessary to use the camera in actual applications.
+```
+yay -S gst-plugin-libcamera pipewire-libcamera
+```
+Restart user-level `pipewire` service afterwards:
+```
+systemctl restart --user pipewire
+```
+In Firefox, set `media.webrtc.camera.allow-pipewire` in `about:config` to `True.
+In Chromium, set `enable-webrtc-pipewire-camera` in `chrome://flags/`.
+Both browsers need a restart for things to work.
 
-FIXME, this is still work in progress!
+Sadly, I am currently still getting segmentation faults of Pipewire and also when trying:
+```
+gst-launch-1.0 libcamerasrc ! video/x-raw,format=RGBA,width=1920,height=1080,framerate=30/1 ! videoconvert ! ximagesink
+```
+but for example `qcam` works.
