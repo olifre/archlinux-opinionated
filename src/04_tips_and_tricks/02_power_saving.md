@@ -30,6 +30,12 @@ Create `/etc/udev/rules.d/50-usb_power_save.rules` with content:
 # blacklist for usb autosuspend
 # ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="05c6", ATTR{idProduct}=="9205", GOTO="power_usb_rules_end"
 
+# CHERRY G83 (RS 6000) Keyboard
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="046a", ATTR{idProduct}=="0011", GOTO="power_usb_rules_end"
+
+# Dell Computer Corp. Dell MS116 Optical Mouse
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="413c", ATTR{idProduct}=="301a", GOTO="power_usb_rules_end"
+
 ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
 LABEL="power_usb_rules_end"
 ```
