@@ -144,7 +144,7 @@ ExecStart=/bin/bash -c "/usr/local/bin/restic_backup.sh backup /etc/restic/resti
 Second is `/etc/systemd/system/restic-check-and-prune@.service`:
 ```
 [Unit]
-Description=restic check-and-prune      
+Description=restic check-and-prune
 
 [Service]
 Type=oneshot
@@ -304,11 +304,15 @@ Description=restic daily backup
 [Timer]
 OnCalendar=*-*-* 23:15:00
 AccuracySec=5min
-Persistent=true
+WakeSystem=true
+#Persistent=true
 
 [Install]
 WantedBy=multi-user.target
 ```
+Note that `Persistent` is not set for such a mobile device, as backup start run in a controlled way and not (potentially) be started whenever the laptop is turned on again.
+However, `WakeSystem=true` is enabled so the laptop will wake at the specified time in case it is suspended. Of course, you might not want to use that depending on your use case.
+
 Enable things:
 ```
 systemctl daemon-reload
