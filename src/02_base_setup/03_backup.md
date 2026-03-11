@@ -310,8 +310,9 @@ WakeSystem=true
 [Install]
 WantedBy=multi-user.target
 ```
-Note that `Persistent` is not set for such a mobile device, as backup start run in a controlled way and not (potentially) be started whenever the laptop is turned on again.
+Note that `Persistent` is not set for such a mobile device, as backup should start in a controlled way and not (potentially) be started whenever the laptop is turned on again.
 However, `WakeSystem=true` is enabled so the laptop will wake at the specified time in case it is suspended. Of course, you might not want to use that depending on your use case.
+Note that the `systemd-inhibit` within the `.service` unit prevents immediate re-suspend e.g. in case the lid is closed.
 
 Enable things:
 ```
