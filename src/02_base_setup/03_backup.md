@@ -135,16 +135,16 @@ mkdir -p /var/log/restic/
 Create two service files, first is `/etc/systemd/system/restic-backup@.service` with content:
 ```
 [Unit]
-Description=restic backup
+Description=restic backup for %i
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c "/usr/local/bin/restic_backup.sh backup /etc/restic/restic_%i.conf 2>&1 | cat -v | tee -a /var/log/restic/restic_%i.log > /dev/null"
+ExecStart=/usr/bin/systemd-inhibit --why="Restic backup for %i" --who="ResticBackup@%i" --what=shutdown:sleep --mode=block /bin/bash -c "/usr/local/bin/restic_backup.sh backup /etc/restic/restic_%i.conf 2>&1 | cat -v | tee -a /var/log/restic/restic_%i.log > /dev/null"
 ```
 Second is `/etc/systemd/system/restic-check-and-prune@.service`:
 ```
 [Unit]
-Description=restic check-and-prune
+Description=restic check-and-prune for %i
 
 [Service]
 Type=oneshot
@@ -299,7 +299,7 @@ For that, there is `restic-check-and-prune@.service` which can be one-shotted ma
 Now, create the timer for the backup, i.e. `/etc/systemd/system/restic-backup@.timer`:
 ```
 [Unit]
-Description=restic daily backup
+Description=restic daily backup for %i
 
 [Timer]
 OnCalendar=*-*-* 23:15:00
