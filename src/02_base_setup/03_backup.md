@@ -136,6 +136,7 @@ Create two service files, first is `/etc/systemd/system/restic-backup@.service` 
 ```
 [Unit]
 Description=restic backup for %i
+After=systemd-suspend.service 
 
 [Service]
 Type=oneshot
@@ -312,7 +313,7 @@ WantedBy=multi-user.target
 ```
 Note that `Persistent` is not set for such a mobile device, as backup should start in a controlled way and not (potentially) be started whenever the laptop is turned on again.
 However, `WakeSystem=true` is enabled so the laptop will wake at the specified time in case it is suspended. Of course, you might not want to use that depending on your use case.
-Note that the `systemd-inhibit` within the `.service` unit prevents immediate re-suspend e.g. in case the lid is closed.
+Note that the `systemd-inhibit` within the `.service` unit prevents immediate re-suspend e.g. in case the lid is closed. The `After` dependency is required as described in [systemd/systemd#14045](https://github.com/systemd/systemd/issues/14045). 
 
 Enable things:
 ```
