@@ -265,3 +265,17 @@ and `~/.cups/lpoptions` with content:
 ```
 Default my-favourite-printer
 ```
+
+## Set up `arch-update`
+Nice graphical tool to check for updates, integrates well with KDE/Plasma. Install:
+```
+yay -S arch-update
+```
+and then enable autostart of tray as user:
+```
+arch-update --tray --enable
+```
+Finally, enable the `systemd` timer unit:
+```
+systemctl --user enable arch-update.timer
+```

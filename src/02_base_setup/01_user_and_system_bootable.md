@@ -50,8 +50,8 @@ yay -Y --devel --save
 ```
 Configure for speed, create `/etc/makepkg.conf.d/multicore.conf` with content:
 ```
-NPROC=8
-MAKEFLAGS="-j8"
+NPROC="$(nproc)"
+MAKEFLAGS="-j$(nproc)"
 ```
 
 ## Adapt the `/etc/fstab`
