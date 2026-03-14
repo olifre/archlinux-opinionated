@@ -54,10 +54,11 @@ Then, create `/etc/systemd/system/btrbk.service` with content:
 ```
 [Unit]
 Description=btrbk backup
+After=systemd-suspend.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/run-btrbk.sh
+ExecStart=/usr/bin/systemd-inhibit --why="btrbk backup" --who="BtrbkBackup" --what=shutdown:sleep --mode=block /usr/local/bin/run-btrbk.sh
 ```
 Then, create `/etc/systemd/system/btrbk.timer` with content:
 ```
