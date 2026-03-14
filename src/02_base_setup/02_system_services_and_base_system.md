@@ -319,10 +319,10 @@ Target = usr/lib/fwupd/efi/fwupdx64.efi
 
 [Action]
 When = PostTransaction
-Exec = /usr/bin/sbsign --key /etc/refind.d/keys/refind_local.key --cert certfile /etc/refind.d/keys/refind_local.crt /usr/lib/fwupd/efi/fwupdx64.efi
+Exec = /usr/bin/sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /usr/lib/fwupd/efi/fwupdx64.efi
 Depends = sbsigntools
 ```
-See also [this ArchWiki article](https://wiki.archlinux.org/title/Fwupd#Secure_Boot).
+See also [this ArchWiki article](https://wiki.archlinux.org/title/Fwupd#Secure_Boot), note we must leav `shim` usage active as we are using a MOK.
 
 For `fwupd` to work, you also need a directory in your ESP which can be used:
 ```
