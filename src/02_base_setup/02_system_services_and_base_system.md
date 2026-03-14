@@ -303,3 +303,37 @@ Check the `journal` on progress, and also `/var/run/bees` contains status inform
 Note that after the first completed `bees` run, you might want to make sure to remove old snapshots from pre-`bees` to ensure they do not remain with duplicated data.
 
 You might also want to check out statistics in `/mnt/btrfs_pool/.beeshome` (note that `/mnt/btrfs_pool` is not mounted by default). 
+
+## Set up `fwupd` for secure boot
+Sign it once manually:
+```
+sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /usr/lib/fwupd/efi/fwupdx64.efi
+```
+and then create the needed hook, create the file `/etc/pacman.d/hooks/sign-fwupd-secureboot.hook` with content:
+```
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Path
+Target = usr/lib/fwupd/efi/fwupdx64.efi
+
+[Action]
+When = PostTransaction
+Exec = /usr/bin/sbsign --key /etc/refind.d/keys/refind_local.key --cert certfile /etc/refind.d/keys/refind_local.crt /usr/lib/fwupd/efi/fwupdx64.efi
+Depends = sbsigntools
+```
+See also [this ArchWiki article](https://wiki.archlinux.org/title/Fwupd#Secure_Boot).
+
+For `fwupd` to work, you also need a directory in your ESP which can be used:
+```
+mkdir -p /efi/EFI/arch
+```
+You must also deploy `shim-signed` there, which was prepared with a hook earlier. You can trigger this manually either be reinstalling `shim-signed` or by copying it manually:
+```
+cp /usr/share/shim-signed/shimx64.efi /efi/EFI/arch/shimx64.efi
+```
+
+To make this look nicer in the `refind` menu, which would assume the `arch` icon otherwise, copy over an icon to the directory:
+```
+cp /efi/EFI/refind/icons/tool_fwupdate.png /efi/EFI/arch/fwupdx64.png
+```

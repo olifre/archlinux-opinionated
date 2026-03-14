@@ -140,6 +140,22 @@ Description = Updating rEFInd on ESP
 When=PostTransaction
 Exec=/usr/bin/refind-install --shim /usr/share/shim-signed/shimx64.efi --localkeys
 ```
+To ensure `shim-signed` stays up to date on the ESP, also create a hook for that by creating `/etc/pacman.d/hooks/shim-signed.hook` with content:
+```
+[Trigger]
+Operation=Upgrade
+Type=Package
+Target=shim-signed
+
+[Action]
+Description = Updating Shim on ESP
+When=PostTransaction
+Exec=/bin/sh -c "/usr/bin/cp /usr/share/shim-signed/shimx64.efi /efi/EFI/arch/shimx64.efi && /usr/bin/cp /usr/share/shim-signed/shimx64.efi /efi/EFI/refind/shimx64.efi"
+```
+Note you must also create `/efi/EFI/arch/` which will be used for `fwupd` later:
+```
+mkdir -p /efi/EFI/arch/
+```
 
 Now, a reboot should show a Secure Boot warning and MokManager should pop up. In there, enroll the MOK from:
 ```
