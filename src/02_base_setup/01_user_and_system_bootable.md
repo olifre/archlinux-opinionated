@@ -122,7 +122,72 @@ Now, follow the [ArchWiki on how to set up kernel signing](https://wiki.archlinu
 ```
 keypairs=(/etc/refind.d/keys/refind_local.key /etc/refind.d/keys/refind_local.crt)
 ```
-Do not forget to make the hook executable! Then, as user:
+so the total file should look like:
+```
+#!/usr/bin/env bash
+
+kernel="$1"
+[[ -n "$kernel" ]] || exit 0
+
+# use already installed kernel if it exists
+[[ ! -f "$KERNELDESTINATION" ]] || kernel="$KERNELDESTINATION"
+
+keypairs=(/etc/refind.d/keys/refind_local.key /etc/refind.d/keys/refind_local.crt)
+
+for (( i=0; i<${#keypairs[@]}; i+=2 )); do
+    key="${keypairs[$i]}" cert="${keypairs[(( i + 1 ))]}"
+    if ! sbverify --cert "$cert" "$kernel" &>/dev/null; then
+        sbsign --key "$key" --cert "$cert" --output "$kernel" "$kernel"
+    fi
+done
+```
+The hook file should be saved as `/etc/initcpio/post/10-kernel-sbsign` so ordering against other hooks is possible. Do not forget to make the hook executable!
+
+We will also add another hook as a small "hack" so the kernel and `initrd` are also present on the ESP in case something goes from with the `XBOOTLDR` partition (or e.g. the `refind` filesystem drivers fail). For this, create a hook file `/etc/initcpio/post/95-copy-to-esp` with content:
+```
+#!/usr/bin/env bash
+
+ESP_DIR=/efi/EFI/arch
+if [[ ! -d "$ESP_DIR" ]]; then
+    echo "ESP directory ${ESP_DIR} does not exist, not copying kernel there!"
+    exit 0
+fi
+
+kernel="$1"
+[[ -n "$kernel" ]] || exit 0
+
+initrd="$2"
+[[ -n "$initrd" ]] || exit 0
+
+BOOTDIR=$(dirname "$KERNELDESTINATION")
+if [[ ! -d "$BOOTDIR" ]]; then
+    echo "Boot directory ${BOOTDIR} which should hold kernel and initrd does not exist, not copying..."
+    exit 0
+fi
+
+# Copy over kernel and initrd:
+cp -av "$kernel" "$ESP_DIR"/
+cp -av "$initrd" "$ESP_DIR"/
+
+# Optional UKI?
+if [ $# -eq 3 ]; then
+    uki=$3
+    cp -av "$uki" "$ESP_DIR"/
+fi
+
+# Copy over refind config if it exists:
+if [[ -f "$BOOTDIR"/refind_linux.conf ]]; then
+    cp -av "$BOOTDIR"/refind_linux.conf "$ESP_DIR"/
+fi
+```
+Do not forget to make it executable.
+
+Note you must also create `/efi/EFI/arch/` which will also be used for `fwupd` later:
+```
+mkdir -p /efi/EFI/arch/
+```
+
+Then, as user:
 ```
 yay -S linux linux-lts
 ```
@@ -151,10 +216,6 @@ Target=shim-signed
 Description = Updating Shim on ESP
 When=PostTransaction
 Exec=/bin/sh -c "/usr/bin/cp /usr/share/shim-signed/shimx64.efi /efi/EFI/arch/shimx64.efi && /usr/bin/cp /usr/share/shim-signed/shimx64.efi /efi/EFI/refind/shimx64.efi"
-```
-Note you must also create `/efi/EFI/arch/` which will be used for `fwupd` later:
-```
-mkdir -p /efi/EFI/arch/
 ```
 
 Now, a reboot should show a Secure Boot warning and MokManager should pop up. In there, enroll the MOK from:
