@@ -68,7 +68,7 @@ UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /home           btrfs           
 UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /mnt/btrfs_pool btrfs           rw,noatime,commit=60,compress-force=zstd:6,ssd,space_cache=v2,subvolid=5,noauto   0 0
 
 # /dev/nvme0n1p1
-UUID=1542-2E81          /efi            vfat            noauto,x-systemd.automount,x-systemd.idle-timeout=1min,rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro   0 2
+UUID=1542-2E81          /efi            vfat            noauto,x-systemd.automount,x-systemd.idle-timeout=1min,rw,relatime,fmask=0027,dmask=0027,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro   0 2
 
 # /dev/nvme0n1p2
 UUID=8fae96ce-42b0-4933-88ac-f4cdb41155ad       /boot           ext4            noauto,commit=60,x-systemd.automount,x-systemd.idle-timeout=1min,rw,relatime      0 2
@@ -90,8 +90,8 @@ For the performance trick, see the [ArchWiki](https://wiki.archlinux.org/title/D
 cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh root
 ```
 
-## Install the bootloader
-We can finally install the boot loader. We will be using Secure Boot, with MOK (Machine-Owner Keys), so do as user:
+## Install the bootloader `refind`
+We can finally install the boot loader `refind`. We will be using Secure Boot, with MOK (Machine-Owner Keys), so do as user:
 ```
 yay -S refind sbsigntools shim-signed
 ```
@@ -169,10 +169,10 @@ fi
 cp -av "$kernel" "$ESP_DIR"/
 cp -av "$initrd" "$ESP_DIR"/
 
-# Optional UKI?
+# Optional UKI would reside on ESP already, no copying.
 if [ $# -eq 3 ]; then
     uki=$3
-    cp -av "$uki" "$ESP_DIR"/
+    #cp -av "$uki" "$ESP_DIR"/
 fi
 
 # Copy over refind config if it exists:
@@ -224,3 +224,116 @@ esp/EFI/refind/keys/refind_local.cer
 ```
 
 If this works as expected, you will have a booting system! You can unenroll the key of your Ventoy medium (if used) at this point.
+
+
+## Fallback solution: UKIs
+
+You may want to enable the build of [Unified kernel images](https://wiki.archlinux.org/title/Unified_kernel_image), which can then easily be booted by simple loaders such as `systemd-boot`.
+To do so, create the directory for kernel commandline snippets:
+```
+mkdir /etc/cmdline.d/
+```
+and then create files as follows:
+```
+echo "rw" > /etc/cmdline.d/root.conf
+echo "zswap.enabled=0" > /etc/cmdline.d/disable-zswap.conf
+echo "rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0" > /etc/cmdline.d/luks.conf
+echo "quiet splash" > /etc/cmdline.d/plymouth.conf
+```
+Now, edit `/etc/mkinitcpio.d/linux.preset` and `/etc/mkinitcpio.d/linux-lts.preset`, in both, uncomment th lines `default_uki` and `default_options`.
+
+Then, create a hook to sign those UKIs with out MOK. Create the file `/etc/initcpio/post/11-uki-sbsign` with content:
+```
+#!/usr/bin/env bash
+
+uki="$3"
+[[ -n "$uki" ]] || exit 0
+
+key=/etc/refind.d/keys/refind_local.key
+cert=/etc/refind.d/keys/refind_local.crt
+
+if ! sbverify --cert "$cert" "$uki" &>/dev/null; then
+    sbsign "$uki" --key "$key" --cert "$cert" --output "$uki"
+fi
+```
+and make sure to mark this file executable!
+
+
+Finally, create the directory for the UKIs and call `mkinitcpio`:
+```
+mkdir -p /efi/EFI/Linux/
+mkinitcpio -P
+```
+You should now find UKIs in `/efi/EFI/Linux/`.
+
+
+## Fallback solution: `systemd-boot`
+In case you have set up UKI building, installing `systemd-boot` is rather easy. Execute:
+```
+bootctl install
+```
+and afterwards inspect `efibootmgr` and adapt your boot order as you like (by default, `systemd-boot` will register itself as the first loader).
+In case you do not want to use UKIs, this is also possible, but not covered here, check [this ArchWiki entry](https://wiki.archlinux.org/title/Systemd-boot) for details on how to achieve that.
+
+You can then check with:
+```
+bootctl status
+```
+whether the setup went well, and:
+```
+bootctl list
+```
+should list the UKIs.
+
+Now, to set up Secure Boot with the MOK created earlier, create the file `/etc/pacman.d/hooks/80-systemd-secureboot.hook` with content:
+```
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Path
+Target = usr/lib/systemd/boot/efi/systemd-boot*.efi
+
+[Action]
+Description = Signing systemd-boot EFI binary for Secure Boot
+When = PostTransaction
+Exec = /bin/sh -c 'while read -r f; do /usr/lib/systemd/systemd-sbsign sign --private-key /etc/refind.d/keys/refind_local.key --certificate /etc/refind.d/keys/refind_local.crt --output "${f}.signed" "$f"; done;'
+Depends = sh
+NeedsTargets
+```
+Furthermore, to automate updates, create `/etc/pacman.d/hooks/95-systemd-boot.hook` with content:
+```
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Gracefully upgrading systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/systemctl restart systemd-boot-update.service
+```
+You need to perform:
+```
+pacman -S systemd
+```
+once afterwards to trigger the hooks, and finally:
+```
+bootctl install
+```
+once more, as the update would otherwise skip updating the same version (which we require as the old one is not signed).
+Remember to check your boot order afterwards!
+
+In the end, this setup is not bootable just yet, as with a MOK, `shim` needs to be used. For that, we can re-use the `shim` deployed with `refind` and already updated as described above. To do so, add your own boot option as follows:
+```
+efibootmgr --disk /dev/nvme0n1 --part 1 --create --label "Linux Secure Boot" --loader '\EFI\refind\shimx64.efi' --unicode '\EFI\systemd\systemd-bootx64.efi '
+```
+Note that the "space" at the end is on purpose, as some firmwares do not seem to safely terminate string payloads without an explicit space, as described in [this GitHub issue](https://github.com/systemd/systemd/issues/27234#issuecomment-2902199758). If even that fails with your firmware, you'd need a separate script to keep `shim` updated, copy it to the `systemd` folder, and rename `systemd-bootx64.efi` to `grubx64.efi` via another hook. Inspiration can be taken from [this ArchLinux forum thread](https://bbs.archlinux.org/viewtopic.php?id=293365).
+Again, make sure the boot order matches what you want after this step!
+
+Finally, you can configure `systemd-boot` to your liking. Edit `/efi/loader/loader.conf` to contain:
+```
+timeout 3
+console-mode keep
+editor yes
+```
+Note that the editor will not work in Secure Boot mode.

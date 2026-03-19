@@ -24,7 +24,9 @@ cryptsetup open /dev/nvme0n1p3 ArchLinux
 mount --mkdir -t btrfs -o defaults,noatime,compress-force=zstd:6,ssd /dev/mapper/ArchLinux /mnt/rootfs
 mount -t btrfs -o defaults,noatime,compress-force=zstd:6,ssd,subvol=home /dev/mapper/ArchLinux /mnt/rootfs/home
 mount /dev/nvme0n1p1 /mnt/rootfs/efi
+chmod 0750 /mnt/rootfs/efi
 mount /dev/nvme0n1p2 /mnt/rootfs/boot
+chmod 0750 /mnt/rootfs/boot
 arch-chroot /mnt/rootfs
 ```
 
