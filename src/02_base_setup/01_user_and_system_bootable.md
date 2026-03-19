@@ -266,6 +266,15 @@ mkinitcpio -P
 ```
 You should now find UKIs in `/efi/EFI/Linux/`.
 
+In case you want to add boot entries for these directly to your firmware, be aware that they need to be loaded via `shim` (since a MOK was used for signing). The following two commands can be used:
+```
+efibootmgr --disk /dev/nvme0n1 --part 1 --create --label "ArchLinux linux" --loader '\EFI\refind\shimx64.efi' --unicode '\EFI\Linux\arch-linux.efi '
+efibootmgr --disk /dev/nvme0n1 --part 1 --create --label "ArchLinux linux-lts" --loader '\EFI\refind\shimx64.efi' --unicode '\EFI\Linux\arch-linux-lts.efi '
+```
+See more details about the "space" at the end of the loader name in the next section, and about potential hacks in case this does not work with your firmware due to bugs.
+
+In case you use this, please check and adapt your boot order to your liking afterwards!
+
 
 ## Fallback solution: `systemd-boot`
 In case you have set up UKI building, installing `systemd-boot` is rather easy. Execute:
