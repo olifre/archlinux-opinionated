@@ -277,7 +277,7 @@ In case you use this, please check and adapt your boot order to your liking afte
 
 
 ## Fallback solution: `systemd-boot`
-In case you have set up UKI building, installing `systemd-boot` is rather easy. Execute:
+In case you have set up UKI building, installing `systemd-boot` is rather easy. Before starting, please note that it will replace the fallback boot loader in addition to installing itself, which might interfere with how Windows expects things to be in case you dual-boot. To go ahead, execute:
 ```
 bootctl install
 ```
