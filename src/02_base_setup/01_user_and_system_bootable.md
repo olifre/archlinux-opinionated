@@ -182,9 +182,10 @@ fi
 ```
 Do not forget to make it executable.
 
-Note you must also create `/efi/EFI/arch/` which will also be used for `fwupd` later:
+Note you must also create `/efi/EFI/arch/` (which will be used for UKIs later) and `/efi/EFI/systemd/` (which will be used for `fwupd` later, note that it prefers `systemd` over `arch`):
 ```
 mkdir -p /efi/EFI/arch/
+mkdir -p /efi/EFI/systemd/
 ```
 
 Then, as user:
@@ -215,7 +216,7 @@ Target=shim-signed
 [Action]
 Description = Updating Shim on ESP
 When=PostTransaction
-Exec=/bin/sh -c "/usr/bin/cp /usr/share/shim-signed/shimx64.efi /efi/EFI/arch/shimx64.efi && /usr/bin/cp /usr/share/shim-signed/shimx64.efi /efi/EFI/refind/shimx64.efi"
+Exec=/bin/sh -c "/usr/bin/cp /usr/share/shim-signed/shimx64.efi /efi/EFI/arch/shimx64.efi && /usr/bin/cp /usr/share/shim-signed/shimx64.efi /efi/EFI/systemd/shimx64.efi && /usr/bin/cp /usr/share/shim-signed/shimx64.efi /efi/EFI/refind/shimx64.efi"
 ```
 
 Now, a reboot should show a Secure Boot warning and MokManager should pop up. In there, enroll the MOK from:
@@ -346,3 +347,6 @@ console-mode keep
 editor yes
 ```
 Note that the editor will not work in Secure Boot mode.
+
+Note: In case you switched to `systemd-boot` later on, you might want to purge existing `fwupd` installs in `/efi/EFI/arch/` as `fwupd` will reinstall itself to `/efi/EFI/systemd` the next time you trigger an update.
+

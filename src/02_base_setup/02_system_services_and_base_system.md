@@ -327,13 +327,17 @@ See also [this ArchWiki article](https://wiki.archlinux.org/title/Fwupd#Secure_B
 For `fwupd` to work, you also need a directory in your ESP which can be used:
 ```
 mkdir -p /efi/EFI/arch
+mkdir -p /efi/EFI/systemd
 ```
+Note that if both directories are present, the `systemd` one will be used preferredly.
 You must also deploy `shim-signed` there, which was prepared with a hook earlier. You can trigger this manually either be reinstalling `shim-signed` or by copying it manually:
 ```
 cp /usr/share/shim-signed/shimx64.efi /efi/EFI/arch/shimx64.efi
+cp /usr/share/shim-signed/shimx64.efi /efi/EFI/systemd/shimx64.efi
 ```
 
-To make this look nicer in the `refind` menu, which would assume the `arch` icon otherwise, copy over an icon to the directory:
+To make this look nicer in the `refind` menu, which would assume the `arch` icon or a generic one otherwise, copy over an icon to the directory:
 ```
 cp /efi/EFI/refind/icons/tool_fwupdate.png /efi/EFI/arch/fwupdx64.png
+cp /efi/EFI/refind/icons/tool_fwupdate.png /efi/EFI/systemd/fwupdx64.png
 ```
