@@ -48,4 +48,55 @@ Sadly, I am currently still getting segmentation faults of Pipewire and also whe
 ```
 gst-launch-1.0 libcamerasrc ! video/x-raw,format=RGBA,width=1920,height=1080,framerate=30/1 ! videoconvert ! ximagesink
 ```
-but for example `qcam` works.
+but for example `qcam` works. However, trying with another resolution:
+```
+gst-launch-1.0 libcamerasrc ! video/x-raw,format=RGBA,width=1920,height=1200,framerate=30/1 ! videoconvert ! ximagesink
+```
+works fine. It still breaks in Firefox etc. as likely they use a different resolution by default.
+
+You will also want to set up `v4l2-relayd` as follows:
+```
+yay -S v4l2loopback-dkms v4l2-relayd
+```
+Now, load the module:
+```
+sudo modprobe v4l2loopback
+```
+and create a config for `v4l2-relayd` and start it. For that, first create `/etc/v4l2-relayd.d/frontcam.conf` with content:
+```
+# GStreamer source element name:
+VIDEOSRC="libcamerasrc"
+#SPLASHSRC="filesrc location=/.../splash.png ! pngdec ! imagefreeze num-buffers=4 ! videoscale ! videoconvert"
+
+# Output format, width, height, and frame rate:
+FORMAT=NV12
+WIDTH=1920
+HEIGHT=1200
+FRAMERATE=30/1
+
+# Virtual video device name:
+CARD_LABEL="Dummy video device \(0x0000\)"
+
+# Extra options to pass to v4l2-relayd:
+EXTRA_OPTS=-d
+```
+Then, let it generate a systemd service froim that and start things:
+```
+systemctl daemon-reload
+systemctl start v4l2-relayd
+```
+You can now check the status via:
+```
+systemctl status v4l2-relayd@frontcam.service
+```
+In principle, the camera should now also be accessible as a V4L2 device, but it still fails for me.
+
+However, the camera is accessible via OBS on my system. Hence, the service above was not enabled permanenty. The following kind of works:
+* Set up OBS, add a pipewire recording device, and select the camera, use resolution 1920x1200 and match it to full recording screen.
+* Start virtual camera from OBS. Note that you must `systemctl stop v4l2-relayd@frontcam.service` first.
+
+Sadly, Firefox crashes trying to access that, even though:
+```
+mpv av://v4l2:/dev/video32
+```
+works fine.
