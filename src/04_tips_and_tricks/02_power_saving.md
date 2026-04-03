@@ -63,8 +63,8 @@ cp /etc/intel_lpmd/intel_lpmd_config_F6_M189.xml /etc/intel_lpmd/intel_lpmd_conf
 ```
 and edit to your liking, for example:
 ```
-<PerformanceDef>0</PerformanceDef>
+<PerformanceDef>-1</PerformanceDef>
 <BalancedDef>0</BalancedDef>
 <PowersaverDef>1</PowersaverDef>
 ```
-Note: Switching to powersave with this example config means only the E cores will be used. In case performance is not required, this can increase runtime noticeably.
+Note: Switching to powersave with this example config means only the E cores will be used. In case performance is not required, this can increase battery runtime noticeably.
