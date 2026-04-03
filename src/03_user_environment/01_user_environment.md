@@ -159,6 +159,7 @@ journalctl --user -u wireproxy@home -f
   * In keyboard setup, enable the compose key, e.g. re-use the "menu" key for that.
   * You might want to change "Desktop" settings and add mouse bindings: Vertical Scroll to switch the vertical desktop and middle click to switch windows.
   * You might also wantr to reconfigure the calendar to show calendar week numbers and important dates, e.g. astronomical events, regional holidays etc.
+  * You might also want to install and configure [Advanced Weather Widget](https://github.com/pnedyalkov91/advanced-weather-widget) for KDE/Plasma, which can be kept up-to-date via Discover and placed as widget next to your taskbar.
 
 ## Set up Git
 Install `git-lfs`:
