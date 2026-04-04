@@ -18,7 +18,7 @@ hwclock --systohc
 ```
 
 ## "Savepoint"
-In case you break off here, you can continue by booting from the installation medium again and setting up keys etc. (see [Booting from the Installation medium](01_installation_system_partitioning_formatting.md#instmedium)), then issue:
+In case you break off here, you can continue by booting from the installation medium again and setting up keyboard layout etc. (see [Booting from the Installation medium](01_installation_system_partitioning_formatting.md#instmedium)), then issue:
 ```
 cryptsetup open /dev/nvme0n1p3 ArchLinux
 mount --mkdir -t btrfs -o defaults,noatime,compress-force=zstd:6,ssd /dev/mapper/ArchLinux /mnt/rootfs

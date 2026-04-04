@@ -66,7 +66,7 @@ systemctl daemon-reload
 udevadm control --reload-rules
 udevadm trigger
 ```
-Now, set up services as wanted, for example, you'll likely want to do this for `beesd`:
+Now, set up services as wanted, for example, you'll likely want to do this for `beesd` (see also [BEES (for btrfs dedupe)](../02_base_setup/02_system_services_and_base_system.md#beesd)):
 ```
 mkdir -p /etc/systemd/system/beesd\@.service.d/
 ```

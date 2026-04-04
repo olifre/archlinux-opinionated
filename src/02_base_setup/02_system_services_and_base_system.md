@@ -210,11 +210,15 @@ systemctl enable --now cronie
 ```
 
 ## Activate monthly BTRFS scrub
-Results of the scrubs can then be found in the system journal.
+A monthly scrub can highlight inconsistencies early on:
 ```
 systemctl enable --now btrfs-scrub@-.timer
 ```
 The `-` is the `systemd-escape` variant of the `/` filesystem.
+Results of the scrubs can then be found in the system journal:
+```
+journalctl -u btrfs-scrub@-.service
+```
 
 ## Set up `dnsmasq`
 Install package `dnsmasq`:
@@ -273,7 +277,7 @@ vainfo
 vulkaninfo
 ```
 
-## BEES (for btrfs deupe)
+## BEES (for btrfs dedupe) {#beesd}
 Install with:
 ```
 yay -S bees
