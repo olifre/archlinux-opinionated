@@ -42,6 +42,54 @@ LABEL="power_usb_rules_end"
 Note that the `blacklist` can be used in case you encounter a device which has problems with that. 
 You may want to run `mkinitcpio -P` afterwards. 
 
+## Setup some services to run only on AC power
+This requires some preparation, as it is not a built-in feature to `systemd` or `udev`.
+
+Create the file `/etc/systemd/system/battery-power.target` with content:
+```
+[Unit]
+Description=Battery-only services
+```
+and the file `/etc/systemd/system/ac-power.target` with content:
+```
+[Unit]
+Description=AC-only services
+```
+Then, hook that unit `udev` by creating `/etc/udev/rules.d/99-powertargets.rules` with content:
+```
+SUBSYSTEM=="power_supply", KERNEL=="AC", ATTR{online}=="0", RUN+="/usr/bin/sh -c '/usr/sbin/systemctl stop ac-power.target && /usr/sbin/systemctl start battery-power.target'"
+SUBSYSTEM=="power_supply", KERNEL=="AC", ATTR{online}=="1", RUN+="/usr/bin/sh -c '/usr/sbin/systemctl stop battery-power.target && /usr/sbin/systemctl start ac-power.target'"
+```
+and finally reload everything as-needed:
+```
+systemctl daemon-reload
+udevadm control --reload-rules
+udevadm trigger
+```
+Now, set up services as wanted, for example, you'll likely want to do this for `beesd`:
+```
+mkdir -p /etc/systemd/system/beesd\@.service.d/
+```
+In there, create `/etc/systemd/system/beesd\@.service.d/only-on-ac.conf` with content:
+```
+[Unit]
+PartOf=ac-power.target
+
+[Install]
+WantedBy=ac-power.target
+```
+To activate the `Install` part, you need to re-enable the service after reloading `systemd`, for example:
+```
+systemctl daemon-reload
+systemctl enable beesd@b8a34ebc-029a-4c77-ac2c-33290c18b461.service
+```
+Now, the service should be switched with AC state. You can check like this:
+```
+systemctl status ac-power.target
+systemctl status battery-power.target
+```
+and of course by investigating the logs of affected services.
+
 ## Intel Low-Power-Mode Daemon
 Install service:
 ```
