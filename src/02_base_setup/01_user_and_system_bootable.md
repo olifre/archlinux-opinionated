@@ -238,9 +238,11 @@ and then create files as follows:
 ```
 echo "rw" > /etc/cmdline.d/root.conf
 echo "zswap.enabled=0" > /etc/cmdline.d/disable-zswap.conf
-echo "rd.luks.options=timeout=0 rootflags=x-systemd.device-timeout=0" > /etc/cmdline.d/luks.conf
+echo "rd.luks.name=bdf5159d-ad5d-4d1d-bfac-ce833c92048d=root rd.luks.options=bdf5159d-ad5d-4d1d-bfac-ce833c92048d=tries=10,timeout=0 rootflags=x-systemd.device-timeout=0" > /etc/cmdline.d/luks.conf
 echo "quiet splash" > /etc/cmdline.d/plymouth.conf
 ```
+Note that the UUID is used here explicitly (see also [Add `refind_linux.conf` for boot configuration](../01_pre_boot/02_bootstrapping_arch_initial_config.md#refindlinuxconf) on the UUID) as especially for UKIs, `sd-encrypt` seems not to allow for any retries at all in case of mistyped passwords and settings may be ignored unless passed in with UUID explicitly.
+
 Now, edit `/etc/mkinitcpio.d/linux.preset` and `/etc/mkinitcpio.d/linux-lts.preset`, in both, uncomment th lines `default_uki` and `default_options`.
 
 Then, create a hook to sign those UKIs with out MOK. Create the file `/etc/initcpio/post/11-uki-sbsign` with content:
