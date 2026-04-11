@@ -100,3 +100,34 @@ Sadly, Firefox crashes trying to access that, even though:
 mpv av://v4l2:/dev/video32
 ```
 works fine.
+
+## Hybrid graphics: Initialization order
+In case you are using hybrid graphics, it might happen that the initialization order of both GPUs is not guaranteed, which can lead to issues down the line (e.g. outputs enumerated and hence named differently between restarts, EDID patches not applied etc.). An order can be enforced for example by creating the file `/etc/modprobe.d/nvidia-before-intel.conf` with content:
+```
+softdep i915 pre: nvidia_drm nvidia_modeset nvidia_uvm nvidia
+```
+and running:
+```
+mkinitcpio -P
+```
+afterwards.
+
+## Applying EDID patches
+In some cases, you may need to patch the EDID of your monitor, e.g. to force support for different refresh rates with Wayland (which does not support custom modelines on its own, unlike X11).
+Note that an alternative to the approach described below are custom modelines which can be created via `kscreen-doctor` in KDE/Plasma environments.
+
+To create a custom EDID, you can for example use [CRU](https://www.monitortests.com/forum/Thread-Custom-Resolution-Utility-CRU) via Wine. You might also have success with [edid-generator](https://github.com/akatrevorjay/edid-generator).
+
+To apply a custom EDID, you can place a patched EDID e.g. in `/lib/firmware/edid/Samsung-Syncmaster-patched.edid` and then edit `/etc/mkinitcpio.conf` to contain:
+```
+FILES=( /lib/firmware/edid/Samsung-Syncmaster-patched.edid )
+```
+Then, add:
+```
+drm.edid_firmware=HDMI-A-1:edid/Samsung-Syncmaster-patched.edid
+```
+to the kernel command line, and run:
+```
+mkinitcpio -P
+```
+afterwards and reboot the system.
