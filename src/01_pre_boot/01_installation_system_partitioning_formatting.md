@@ -26,15 +26,19 @@ For partition#ing, we use `gdisk`:
 5. Note that 8304 is required even for crypted volume to allow for GPT automounting.
 
 ## Formatting disks
+Note: The labels are mostly for identification in "classic" tools, e.g. in the BIOS / vendor UEFI update tool.
 ```
 mkfs.fat -F 32 /dev/nvme0n1p1
+fatlabel /dev/nvme0n1p1 ESP
 mkfs.ext4 /dev/nvme0n1p2
+e2label /dev/nvme0n1p2 XBOOTLDR
 # Takes good defaults into account, may want to check sector size via https://wiki.archlinux.org/title/Advanced_Format#NVMe_solid_state_drives ...
 cryptsetup luksFormat -s 512 /dev/nvme0n1p3
 # Check with:
 cryptsetup luksDump /dev/nvme0n1p3
 cryptsetup open /dev/nvme0n1p3 ArchLinux
 mkfs.btrfs -O block-group-tree /dev/mapper/ArchLinux
+btrfs filesystem label /dev/mapper/ArchLinux ArchLinux
 ```
 
 ## Setup BTRFS
