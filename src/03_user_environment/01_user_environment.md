@@ -281,3 +281,13 @@ Finally, enable the `systemd` timer unit:
 ```
 systemctl --user enable arch-update.timer
 ```
+
+## Improve audio playback
+Necessary for fluent video playback, create `/etc/pipewire/pipewire.conf.d/sampling.conf` with content:
+```
+context.properties = {
+    default.clock.rate = 48000
+    default.clock.allowed-rates = [ 192000 96000 48000 44100 ]  # Up to 16 can be specified
+}
+```
+See also the [Gentoo wiki](https://wiki.gentoo.org/wiki/PipeWire#Sample_rates) on this topic.
