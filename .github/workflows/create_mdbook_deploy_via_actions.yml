@@ -69,6 +69,8 @@ jobs:
         run: mdbook build
       - name: Build sitemap with mdBook utils
         run: mdbook-utils sitemap -m src -b https://olifre.github.io/archlinux-opinionated/ -y
+      - name: Add a really simple robots.txt
+        run: echo "https://olifre.github.io/archlinux-opinionated/sitemap.xml" > book/robots.txt
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
