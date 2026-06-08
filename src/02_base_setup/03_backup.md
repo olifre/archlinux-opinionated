@@ -88,12 +88,16 @@ Create dir for configs:
 ```
 mkdir -p /etc/restic
 ```
-Within, create `/etc/restic/restic_root.conf` and `/etc/restic/restic_home.conf`, follow this scheme:
+Within, create `/etc/restic/restic_root.conf` and `/etc/restic/restic_home.conf`, follow this scheme, note we use more connections and a larger pack size for better throughput:
 ```
 RESTIC_PASSWORD="secret"
 RESTIC_COMPRESSION="max"
 AWS_ACCESS_KEY_ID="secret"
 AWS_SECRET_ACCESS_KEY="secret"
+RESTIC_OPTS=(
+  "-o" "s3.connections=20"
+)
+RESTIC_PACK_SIZE=64
 RESTIC_REPOSITORY="s3:rgw.example.com:7480/my-machine-home"
 PRE_BACKUP_COMMAND=""
 POST_BACKUP_COMMAND=""
@@ -233,7 +237,7 @@ if [ "$MODE" = "backup" ]; then
     echo "Done!"
   fi
   echo "Running restic..."
-  restic --verbose=${VERBOSITY} backup "${RESTIC_BACKUP_PARS[@]}" ${PATH_TO_BACKUP}
+  restic --verbose=${VERBOSITY} backup "${RESTIC_OPTS[@]}" "${RESTIC_BACKUP_PARS[@]}" ${PATH_TO_BACKUP}
   echo "Done!"
   if [ -n "${POST_BACKUP_COMMAND}" ]; then
     echo "Running post-backup-command \"${POST_BACKUP_COMMAND}\"..."
@@ -267,14 +271,14 @@ if [ "$MODE" = "backup" ]; then
   fi
   SECONDS=0
   echo "Starting forgetting of old snapshots at $(date)..."
-  restic --verbose=${VERBOSITY} forget --cleanup-cache "${RESTIC_FORGET_PARS[@]}"
+  restic --verbose=${VERBOSITY} forget "${RESTIC_OPTS[@]}" --cleanup-cache "${RESTIC_FORGET_PARS[@]}"
   echo "Forgetting of old snapshots finished at $(date) (after ${SECONDS} seconds)."
 fi
 
 if [ "$MODE" = "check-and-prune" ]; then
   SECONDS=0
   echo "Start of checking at $(date)."
-  restic --verbose=${VERBOSITY} check --retry-lock 1h --read-data
+  restic --verbose=${VERBOSITY} check "${RESTIC_OPTS[@]}" --retry-lock 1h --read-data
   CHECK_RES=$?
   if [ $CHECK_RES -ne 0 ]; then
     echo "Error: Check was not successful, exiting here, not pruning!"
@@ -284,7 +288,7 @@ if [ "$MODE" = "check-and-prune" ]; then
 
   SECONDS=0
   echo "Start of pruning at $(date)."
-  restic --verbose=${VERBOSITY} prune --repack-small
+  restic --verbose=${VERBOSITY} prune "${RESTIC_OPTS[@]}" --repack-small
   echo "End of pruning at $(date). Duration: $SECONDS seconds."
 fi
 
