@@ -28,7 +28,7 @@ jobs:
       #MDBOOK_VERSION: 0.4.36
       MDBOOK_VERSION: latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Get date in ISO-8601
