@@ -84,13 +84,28 @@ jobs:
   clear-old-caches:
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      actions: write
+      contents: read
+
     steps:
-      - name: Clear out old caches
-        uses: MyAlbum/purge-cache@v2
-        with:
-          accessed: true # Purge caches by their last accessed time (default)
-          created: false # Purge caches by their created time (default)
-          max-age: 604800 # Leave only caches accessed in the last 7 days (default)
+      - name: Purge old caches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          CUTOFF_DATE=$(date -d "7 days ago" -u +"%Y-%m-%dT%H:%M:%SZ")
+          CURR_CACHES=$(gh cache list --limit 100 --json id,lastAccessedAt)
+          CACHE_IDS=$(echo "${CURR_CACHES}" | jq -r ".[] | select(.lastAccessedAt < \"${CUTOFF_DATE}\") | .id")
+          echo "Current caches:"
+          echo "${CURR_CACHES}" | jq
+          if [ -z "${CACHE_IDS}" ]; then
+            echo "No old unaccessed caches found."
+          else
+            for id in $CACHE_IDS; do
+              gh cache delete "$id"
+            done
+          fi
 
   # Deployment job
   deploy:
