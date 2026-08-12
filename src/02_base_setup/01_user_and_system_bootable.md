@@ -15,7 +15,7 @@ passwd olifre
 For more comfort (e.g. to set up a system with small screen or keyboard), you may now want to log in via `ssh` remotely. 
 
 ## Securing SSH
-Configure `sshd`, i.e. copy over pubkey with `ssh-copy-id`, then set in `/etc/ssh/sshd_config`:
+Configure `sshd`, i.e. copy over pubkey with `ssh-copy-id`, then set in `/etc/ssh/sshd_config.d/90-userconfig.conf` (file has to be newly created):
 ```
 PasswordAuthentication no
 ```
