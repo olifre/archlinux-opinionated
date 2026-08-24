@@ -9,7 +9,9 @@ systemctl enable --now sshd
 ```
 useradd -m olifre
 passwd olifre
+loginctl enable-linger olifre
 ```
+Note: The `linger` feature will allow some user-level services to start even before login, e.g. Syncthing, userspace Wireguard etc.
 
 ## Remote login
 For more comfort (e.g. to set up a system with small screen or keyboard), you may now want to log in via `ssh` remotely. 
