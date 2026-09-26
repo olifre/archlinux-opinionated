@@ -14,6 +14,9 @@ qcam
 ```
 for testing things.
 
+> [!WARNING]
+> The following part is not needed anymore as of `linux-7.2.7`, which ships with `CONFIG_VIDEO_INTEL_CVS=m`, see also [this workitem](https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/work_items/211).
+
 If this does not show something useful (see the [Guide on the ArchWiki](https://wiki.archlinux.org/title/Dell_XPS_13_(9350)_2024#Camera), install DKMS and kernel headers so DKMS can be used:
 ```
 yay -S dkms linux-lts-headers linux-headers
@@ -56,7 +59,7 @@ works fine. It still breaks in Firefox etc. as likely they use a different resol
 
 You will also want to set up `v4l2-relayd` as follows:
 ```
-yay -S v4l2loopback-dkms v4l2-relayd
+yay -S dkms linux-headers linux-lts-headers v4l2loopback-dkms v4l2-relayd
 ```
 Now, load the module:
 ```
