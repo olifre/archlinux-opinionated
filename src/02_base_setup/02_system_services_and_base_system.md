@@ -22,7 +22,7 @@ You may want to edit `/etc/xdg/reflector/reflector.conf` to contain your country
 ## Install some basic tools
 Some tools from Arch repos:
 ```
-pacman -S powertop guvcview chromium firefox firefox-i18n-de thunderbird thunderbird-i18n-de nextcloud-client fwupd stress-ng mpv libreoffice-fresh libreoffice-fresh-de power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs-wayland wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb usbutils arandr jq yq wev yubikey-personalization-gui yubikey-manager root jupyter-metakernel gnuplot python-matplotlib python-numpy python-pandas python-scipy pv python-pip perf tigervnc networkmanager-openconnect bind hid-tools sshpass ethtool ndisc6 xrootd kdiff3 apptainer diffpdf diffoscope mdbook hugo wget aria2 python-jinja 7zip cpupower rebuild-detector obs-studio labplot pdftk qpdf tesseract-data-eng progress xournalpp mokutil devtools wavemon
+pacman -S powertop guvcview chromium firefox firefox-i18n-de thunderbird thunderbird-i18n-de nextcloud-client fwupd stress-ng mpv libreoffice-fresh libreoffice-fresh-de power-profiles-daemon keepassxc wl-clipboard xclip waypipe rsync biber python-pygments xorg-xlsclients inkscape screen strace iftop iotop-c htop tcpdump compsize scrcpy emacs-wayland wireshark-qt tcpdump gimp speedtest-cli iperf3 freerdp wakeonlan github-cli fortune-mod syncthing zathura zathura-pdf-poppler zathura-ps zathura-cb usbutils arandr jq yq wev yubikey-personalization-gui yubikey-manager root jupyter-metakernel gnuplot python-matplotlib python-numpy python-pandas python-scipy pv python-pip perf tigervnc networkmanager-openconnect bind hid-tools sshpass ethtool ndisc6 xrootd kdiff3 apptainer diffpdf diffoscope mdbook hugo wget aria2 python-jinja 7zip cpupower rebuild-detector obs-studio labplot pdftk qpdf tesseract-data-eng progress xournalpp mokutil devtools wavemon syncthingtray syncthingtray-plasma syncthingtray-dolphin
 ```
 Then, the groups:
 ```
@@ -34,7 +34,7 @@ pacman -S texlive-langgerman
 ```
 and from AUR:
 ```
-yay -S syncthingtray-qt6 powerstat afc charliecloud
+yay -S  powerstat afc charliecloud
 ```
 
 ## Configure `nano`
